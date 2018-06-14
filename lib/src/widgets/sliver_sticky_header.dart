@@ -6,15 +6,18 @@ class SliverStickyHeader extends RenderObjectWidget {
     Key key,
     this.header,
     this.sliver,
+    this.overlapsContent : false
   })  : super(key: key);
 
   final Widget header;
 
   final Widget sliver;
 
+  final bool overlapsContent;
+
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
-    return new RenderSliverStickyHeader();
+    return new RenderSliverStickyHeader(overlapsContent: overlapsContent);
   }
 
   @override

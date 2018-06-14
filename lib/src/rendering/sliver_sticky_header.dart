@@ -7,10 +7,13 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderBox header,
     RenderSliver child,
+    this.overlapsContent: false,
   }) {
     this.header = header;
     this.child = child;
   }
+
+  final bool overlapsContent;
 
   RenderBox _header;
 
@@ -108,7 +111,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     }
 
     // Compute the header extent only one time.
-    double headerExtent = this.headerExtent;
+    double headerExtent = overlapsContent ? 0.0 : this.headerExtent ;
     final double headerPaintExtent = calculatePaintOffset(constraints, from: 0.0, to: headerExtent);
     final double headerCacheExtent = calculateCacheOffset(constraints, from: 0.0, to: headerExtent);
 
@@ -180,7 +183,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     if (header != null) {
       final SliverPhysicalParentData headerParentData = header.parentData;
       final childScrollExtent =  child?.geometry?.scrollExtent ?? 0.0;
-      double headerPosition = math.min(0.0, childScrollExtent - constraints.scrollOffset);
+      double headerPosition = math.min(0.0, childScrollExtent - constraints.scrollOffset - (overlapsContent ? this.headerExtent : 0.0));
 
       switch (axisDirection) {
         case AxisDirection.up:

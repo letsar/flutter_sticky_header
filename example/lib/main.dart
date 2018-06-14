@@ -66,9 +66,10 @@ class MainScreen extends StatelessWidget {
 
   Widget buildHeaderAndContent(BuildContext context, int index) {
     return new SliverStickyHeader(
+      overlapsContent: index == 8,
       header: new Container(
         height: 60.0,
-        color: index.isEven ? Colors.orange : Colors.green,
+        color: index == 8 ? Colors.deepOrange.withOpacity(0.6) : (index.isEven ? Colors.orange : Colors.green),
         padding: new EdgeInsets.symmetric(horizontal: 16.0),
         alignment: Alignment.centerLeft,
         child: new Text(
