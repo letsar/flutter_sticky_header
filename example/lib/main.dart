@@ -59,6 +59,34 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       );
+    }else if(index == 12){
+      return new SliverStickyHeader(
+        overlapsContent: index == 8,
+        header: new Container(
+          height: 60.0,
+          color: index == 8 ? Colors.deepOrange.withOpacity(0.6) : (index.isEven ? Colors.orange : Colors.green),
+          padding: new EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: <Widget>[
+              new Text(
+                'Header #$index',
+                style: const TextStyle(color: Colors.white)),
+                new Expanded(child: new FlatButton(onPressed: () => showDialog(context: context, builder: (context) =>  AlertDialog(title: Text('hello $index'),),), child: Text('click'))
+              ),
+            ],
+          ),
+        ),
+        sliver: new SliverList(
+          delegate: new SliverChildBuilderDelegate(
+                (c, i) => new FlatButton(
+              child: new Text('index $i'),
+                  onPressed: () => showDialog(context: context, builder: (context) =>  AlertDialog(title: Text('Hello $i'),),),
+              ),
+            childCount: 8,
+          ),
+        ),
+      );
     } else {
       return buildHeaderAndContent(context, index);
     }

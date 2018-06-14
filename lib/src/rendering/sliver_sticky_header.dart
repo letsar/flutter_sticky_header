@@ -99,6 +99,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     return null;
   }
 
+  double get headerLogicalExtent => overlapsContent ? 0.0 : headerExtent;
+
   @override
   void performLayout() {
     if (header == null && child == null) {
@@ -117,7 +119,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     }
 
     // Compute the header extent only one time.
-    double headerExtent = overlapsContent ? 0.0 : this.headerExtent;
+    double headerExtent = headerLogicalExtent;
     final double headerPaintExtent = calculatePaintOffset(constraints, from: 0.0, to: headerExtent);
     final double headerCacheExtent = calculateCacheOffset(constraints, from: 0.0, to: headerExtent);
 
@@ -203,6 +205,26 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
           break;
       }
     }
+  }
+
+  /// TODO:
+  @override
+  bool hitTestChildren(HitTestResult result, {@required double mainAxisPosition, @required double crossAxisPosition}) {
+    debugPrint('hit test $mainAxisPosition');
+    assert(geometry.hitTestExtent > 0.0);
+    if (header != null && mainAxisPosition <= headerExtent) {
+      return hitTestBoxChild(result, header, mainAxisPosition: mainAxisPosition, crossAxisPosition: crossAxisPosition);
+    } else if (child != null && child.geometry.hitTestExtent > 0.0) {
+      return child.hitTest(result, mainAxisPosition: mainAxisPosition - childMainAxisPosition(child), crossAxisPosition: crossAxisPosition);
+    }
+    return false;
+  }
+
+  @override
+  double childMainAxisPosition(RenderObject child) {
+    if (child == header) return -constraints.scrollOffset;
+    if (child == this.child) return calculatePaintOffset(constraints, from: 0.0, to: headerExtent);
+    return null;
   }
 
   @override
