@@ -7,7 +7,8 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.header,
     this.sliver,
     this.overlapsContent : false
-  })  : super(key: key);
+  })  : assert(overlapsContent != null),
+        super(key: key);
 
   final Widget header;
 
@@ -23,6 +24,12 @@ class SliverStickyHeader extends RenderObjectWidget {
   @override
   SliverStickyHeaderRenderObjectElement createElement() =>
       new SliverStickyHeaderRenderObjectElement(this);
+
+  @override
+  void updateRenderObject(BuildContext context, RenderSliverStickyHeader renderObject) {
+    renderObject
+      ..overlapsContent = overlapsContent;
+  }
 }
 
 class SliverStickyHeaderRenderObjectElement extends RenderObjectElement {

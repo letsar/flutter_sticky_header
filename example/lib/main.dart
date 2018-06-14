@@ -89,7 +89,7 @@ class MainScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-          childCount: 5,
+          childCount: 8,
         ),
       ),
     );
