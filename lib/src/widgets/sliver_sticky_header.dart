@@ -2,12 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
 
 class SliverStickyHeader extends RenderObjectWidget {
-  SliverStickyHeader({
-    Key key,
-    this.header,
-    this.sliver,
-    this.overlapsContent : false
-  })  : assert(overlapsContent != null),
+  SliverStickyHeader(
+      {Key key, this.header, this.sliver, this.overlapsContent: false})
+      : assert(overlapsContent != null),
         super(key: key);
 
   final Widget header;
@@ -26,9 +23,9 @@ class SliverStickyHeader extends RenderObjectWidget {
       new SliverStickyHeaderRenderObjectElement(this);
 
   @override
-  void updateRenderObject(BuildContext context, RenderSliverStickyHeader renderObject) {
-    renderObject
-      ..overlapsContent = overlapsContent;
+  void updateRenderObject(
+      BuildContext context, RenderSliverStickyHeader renderObject) {
+    renderObject..overlapsContent = overlapsContent;
   }
 }
 

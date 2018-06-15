@@ -41,25 +41,25 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       );
-    }else if(index ==6) {
+    } else if (index == 6) {
       return new SliverStickyHeader(
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
-                (c, i) => new Container(
-              height: 40.0,
-              color: Colors.lightBlue,
-              padding: new EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerLeft,
-              child: new Text(
-                'Tile #$i',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
+            (c, i) => new Container(
+                  height: 60.0,
+                  color: Colors.lightBlue,
+                  padding: new EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.centerLeft,
+                  child: new Text(
+                    'Tile #$i',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
             childCount: 5,
           ),
         ),
       );
-    }else if(index == 12){
+    } else if (index == 12) {
       return new SliverStickyHeader(
         overlapsContent: index == 8,
         header: new Container(
@@ -69,20 +69,36 @@ class MainScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Row(
             children: <Widget>[
-              new Text(
-                'Header #$index',
-                style: const TextStyle(color: Colors.white)),
-                new Expanded(child: new FlatButton(onPressed: () => showDialog(context: context, builder: (context) =>  AlertDialog(title: Text('hello $index'),),), child: Text('click'))
-              ),
+              new Text('Header #$index', style: const TextStyle(color: Colors.white)),
+              new Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: new FlatButton(
+                    onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text('hello $index'),
+                              ),
+                        ),
+                    child: Text('click')),
+              )),
             ],
           ),
         ),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
-                (c, i) => new FlatButton(
-              child: new Text('index $i'),
-                  onPressed: () => showDialog(context: context, builder: (context) =>  AlertDialog(title: Text('Hello $i'),),),
-              ),
+            (c, i) => Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: new FlatButton(
+                    child: new Text('index $i'),
+                    onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text('Hello $i'),
+                              ),
+                        ),
+                  ),
+                ),
             childCount: 8,
           ),
         ),
@@ -108,8 +124,8 @@ class MainScreen extends StatelessWidget {
       sliver: new SliverList(
         delegate: new SliverChildBuilderDelegate(
           (c, i) => new Container(
-                height: 40.0,
-                color: Colors.lightBlue,
+                height: 80.0,
+                color: Colors.lightBlue.withOpacity(0.5),
                 padding: new EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.centerLeft,
                 child: new Text(
