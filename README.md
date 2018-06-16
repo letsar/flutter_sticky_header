@@ -1,6 +1,6 @@
 # flutter_sticky_header
 
-A Flutter implementation for sticky headers with a sliver as a child.
+A Flutter implementation of sticky headers with a sliver as a child.
 
 [![Pub](https://img.shields.io/pub/v/flutter_sticky_header.svg)](https://pub.dartlang.org/packages/flutter_sticky_header)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QTT34M25RDNL6)
@@ -34,6 +34,8 @@ For help getting started with Flutter, view the online [documentation](https://f
 
 ## SliverStickyHeader
 
+You can place one or multiple `SliverStickyHeader`s inside a `CustomScrollView`.
+
 ```dart
 new SliverStickyHeader(
   header: new Container(
@@ -61,6 +63,10 @@ new SliverStickyHeader(
 ```
 
 ## SliverStickyHeaderBuilder
+
+If you want to change the header layout during its scroll, you can use the `SliverStickyHeaderBuilder`.
+
+The example belows changes the opacity of the header as it scrolls off the viewport.
 
 ```dart
 new SliverStickyHeaderBuilder(
