@@ -21,6 +21,8 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
 
+    //slivers.add(_buildExample());
+    //slivers.add(_buildBuilderExample());
     slivers.addAll(_buildLists(0, 3));
     slivers.addAll(_buildGrids(3, 3));
     slivers.addAll(_buildSideHeaderGrids(6, 3));
@@ -182,6 +184,58 @@ class MainScreen extends StatelessWidget {
       child: new Text(
         'Header #$index',
         style: const TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildExample() {
+    return new SliverStickyHeader(
+      header: new Container(
+        height: 60.0,
+        color: Colors.lightBlue,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        alignment: Alignment.centerLeft,
+        child: new Text(
+          'Header #0',
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      sliver: new SliverList(
+        delegate: new SliverChildBuilderDelegate(
+          (context, i) => new ListTile(
+                leading: new CircleAvatar(
+                  child: new Text('0'),
+                ),
+                title: new Text('List tile #$i'),
+              ),
+          childCount: 4,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBuilderExample() {
+    return new SliverStickyHeaderBuilder(
+      builder: (context, scrollPercentage) => new Container(
+            height: 60.0,
+            color: Colors.lightBlue.withOpacity(1.0 - scrollPercentage),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.centerLeft,
+            child: new Text(
+              'Header #1',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+      sliver: new SliverList(
+        delegate: new SliverChildBuilderDelegate(
+          (context, i) => new ListTile(
+                leading: new CircleAvatar(
+                  child: new Text('0'),
+                ),
+                title: new Text('List tile #$i'),
+              ),
+          childCount: 4,
+        ),
       ),
     );
   }

@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/src/widgets/sliver_sticky_header_scroll_notifier.dart';
 
+/// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
+///
+/// The [header] stays pinned when it hits the start of the viewport until
+/// the [child] scrolls off the viewport.
 class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderBox header,

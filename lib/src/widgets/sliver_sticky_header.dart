@@ -3,10 +3,21 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
 import 'package:flutter_sticky_header/src/widgets/sliver_sticky_header_scroll_notifier.dart';
 
+/// Signature used by [SliverStickyHeaderBuilder] to build the header
+/// when the percentage of scroll of the header has changed.
 typedef Widget SliverStickyHeaderWidgetBuilder(
-    BuildContext context, double scollPercentage);
+    BuildContext context, double scrollPercentage);
 
+/// A sliver that displays a header before its sliver.
+/// The header scrolls off the viewport only when the sliver does.
+///
+/// Place this widget inside a [CustomScrollView] or similar.
 class SliverStickyHeader extends RenderObjectWidget {
+  /// Creates a sliver that displays the [header] before its [sliver], unless [overlapsContent] it's true.
+  /// The [header] stays pinned when it hits the start of the viewport until
+  /// the [sliver] scrolls off the viewport.
+  ///
+  /// The [overlapsContent] argument must not be null.
   SliverStickyHeader({
     Key key,
     this.header,
@@ -16,12 +27,19 @@ class SliverStickyHeader extends RenderObjectWidget {
   })  : assert(overlapsContent != null),
         super(key: key);
 
+  /// The header to display before the sliver.
   final Widget header;
 
+  /// The sliver to display after the header.
   final Widget sliver;
 
+  /// Whether the header should be drawn on top of the sliver
+  /// instead of before.
   final bool overlapsContent;
 
+  /// The controller used to listen to the header's scroll percentage changes.
+  ///
+  /// Consider using the [SliverStickyHeaderBuilder] if you have to use this.
   final SliverStickyHeaderScrollNotifier sliverStickyHeaderScrollNotifier;
 
   @override
@@ -45,19 +63,35 @@ class SliverStickyHeader extends RenderObjectWidget {
   }
 }
 
+/// A widget that builds a [SliverStickyHeader] and calls a [SliverStickyHeaderWidgetBuilder] when
+/// the header scroll percentage changes.
+///
+/// This is useful if you want to change the header layout when it starts to scroll off the viewport.
 class SliverStickyHeaderBuilder extends StatefulWidget {
+  /// Creates a widget that builds the header of a [SliverStickyHeader]
+  /// each time its scroll percentage changes.
+  ///
+  /// The [builder] and [overlapsContent] arguments must not be null.
   const SliverStickyHeaderBuilder({
     Key key,
     @required this.builder,
     this.sliver,
     this.overlapsContent: false,
-  })  : assert(overlapsContent != null),
+  })  : assert(builder != null),
+        assert(overlapsContent != null),
         super(key: key);
 
+  /// Called to build the [SliverStickyHeader]'s header.
+  ///
+  /// This function is called when the [SliverStickyHeader]'s header
+  /// scroll percentage changes.
   final SliverStickyHeaderWidgetBuilder builder;
 
+  /// The sliver to display after the header.
   final Widget sliver;
 
+  /// Whether the header should be drawn on top of the sliver
+  /// instead of before.
   final bool overlapsContent;
 
   @override
