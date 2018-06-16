@@ -24,6 +24,7 @@ class MainScreen extends StatelessWidget {
     slivers.addAll(_buildLists(0, 3));
     slivers.addAll(_buildGrids(3, 3));
     slivers.addAll(_buildSideHeaderGrids(6, 3));
+    slivers.addAll(_buildHeaderBuilderLists(9, 5));
 
     return new SimpleScaffold(
       title: 'Flutter Sticky Header example',
@@ -36,6 +37,27 @@ class MainScreen extends StatelessWidget {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
         header: _buildHeader(sliverIndex),
+        sliver: new SliverList(
+          delegate: new SliverChildBuilderDelegate(
+            (context, i) => new ListTile(
+                  leading: new CircleAvatar(
+                    child: new Text('$sliverIndex'),
+                  ),
+                  title: new Text('List tile #$i'),
+                ),
+            childCount: 4,
+          ),
+        ),
+      );
+    });
+  }
+
+  List<Widget> _buildHeaderBuilderLists(int firstIndex, int count) {
+    return List.generate(count, (sliverIndex) {
+      sliverIndex += firstIndex;
+      return new SliverStickyHeaderBuilder(
+        builder: (context, scrollPercentage) =>
+            _buildAnimatedHeader(sliverIndex, scrollPercentage),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
             (context, i) => new ListTile(
@@ -94,7 +116,10 @@ class MainScreen extends StatelessWidget {
           padding: new EdgeInsets.only(left: 60.0),
           sliver: new SliverGrid(
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0,childAspectRatio: 1.0),
+                crossAxisCount: 3,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+                childAspectRatio: 1.0),
             delegate: new SliverChildBuilderDelegate(
               (context, i) => new GridTile(
                     child: Card(
@@ -144,6 +169,19 @@ class MainScreen extends StatelessWidget {
         backgroundColor: Colors.orangeAccent,
         foregroundColor: Colors.white,
         child: new Text('$index'),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedHeader(int index, double scrollPercentage) {
+    return new Container(
+      height: 60.0,
+      color: Colors.lightBlue.withOpacity(1.0 - scrollPercentage),
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      alignment: Alignment.centerLeft,
+      child: new Text(
+        'Header #$index',
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
