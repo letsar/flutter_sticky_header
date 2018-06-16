@@ -5,7 +5,7 @@ A Flutter implementation of sticky headers with a sliver as a child.
 [![Pub](https://img.shields.io/pub/v/flutter_sticky_header.svg)](https://pub.dartlang.org/packages/flutter_sticky_header)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QTT34M25RDNL6)
 
-![Screenshot](https://raw.githubusercontent.com/letsar/flutter_sticky_header/master/doc/images/sticky_header_all.PNG)
+![Screenshot](https://raw.githubusercontent.com/letsar/flutter_sticky_header/master/doc/images/sticky_header_all.gif)
 
 ## Features
 
