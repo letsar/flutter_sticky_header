@@ -1,7 +1,6 @@
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
-import 'package:flutter_sticky_header/src/widgets/sliver_sticky_header_scroll_notifier.dart';
+import 'package:flutter_sticky_header/src/widgets/sticky_header_layout_builder.dart';
 
 /// Signature used by [SliverStickyHeaderBuilder] to build the header
 /// when the percentage of scroll of the header has changed.
@@ -23,7 +22,6 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.header,
     this.sliver,
     this.overlapsContent: false,
-    this.sliverStickyHeaderScrollNotifier,
   })  : assert(overlapsContent != null),
         super(key: key);
 
@@ -37,16 +35,10 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// instead of before.
   final bool overlapsContent;
 
-  /// The controller used to listen to the header's scroll percentage changes.
-  ///
-  /// Consider using the [SliverStickyHeaderBuilder] if you have to use this.
-  final SliverStickyHeaderScrollNotifier sliverStickyHeaderScrollNotifier;
-
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
     return new RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
-      sliverStickyHeaderScrollNotifier: sliverStickyHeaderScrollNotifier,
     );
   }
 
@@ -57,9 +49,7 @@ class SliverStickyHeader extends RenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderSliverStickyHeader renderObject) {
-    renderObject
-      ..overlapsContent = overlapsContent
-      ..sliverStickyHeaderScrollNotifier = sliverStickyHeaderScrollNotifier;
+    renderObject..overlapsContent = overlapsContent;
   }
 }
 
@@ -67,7 +57,9 @@ class SliverStickyHeader extends RenderObjectWidget {
 /// the header scroll percentage changes.
 ///
 /// This is useful if you want to change the header layout when it starts to scroll off the viewport.
-class SliverStickyHeaderBuilder extends StatefulWidget {
+/// You cannot change the main axis extent of the header in this builder otherwise it could result
+/// in strange behavior.
+class SliverStickyHeaderBuilder extends StatelessWidget {
   /// Creates a widget that builds the header of a [SliverStickyHeader]
   /// each time its scroll percentage changes.
   ///
@@ -95,37 +87,13 @@ class SliverStickyHeaderBuilder extends StatefulWidget {
   final bool overlapsContent;
 
   @override
-  _SliverStickyHeaderBuilderState createState() =>
-      new _SliverStickyHeaderBuilderState();
-}
-
-class _SliverStickyHeaderBuilderState extends State<SliverStickyHeaderBuilder> {
-  double _scrollPercentage;
-  SliverStickyHeaderScrollNotifier _sliverStickyHeaderScrollNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    _sliverStickyHeaderScrollNotifier = new SliverStickyHeaderScrollNotifier();
-    _sliverStickyHeaderScrollNotifier.addListener(_scrollPercentageChanged);
-  }
-
-  void _scrollPercentageChanged() {
-    SchedulerBinding.instance.addPostFrameCallback((Duration timestamp) {
-      setState(() => _scrollPercentage =
-          _sliverStickyHeaderScrollNotifier.scrollPercentage);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new SliverStickyHeader(
-      overlapsContent: widget.overlapsContent,
-      sliverStickyHeaderScrollNotifier: _sliverStickyHeaderScrollNotifier,
-      sliver: widget.sliver,
-      header: new LayoutBuilder(
-        builder: (context, _) =>
-            widget.builder(context, _scrollPercentage ?? 0.0),
+      overlapsContent: overlapsContent,
+      sliver: sliver,
+      header: new StickyHeaderLayoutBuilder(
+        builder: (context, constraints) =>
+            builder(context, constraints.scrollPercentage),
       ),
     );
   }
