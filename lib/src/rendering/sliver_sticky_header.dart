@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_constraints.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_layout_builder.dart';
 
@@ -20,7 +21,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     this.child = child;
   }
 
-  double _oldScrollPercentage;
+  SliverStickyHeaderState _oldState;
 
   double _headerExtent;
 
@@ -124,7 +125,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     if (header != null) {
       header.layout(
         new StickyHeaderConstraints(
-          scrollPercentage: _oldScrollPercentage ?? 0.0,
+          state: _oldState ?? new SliverStickyHeaderState(0.0, false),
           boxConstraints: constraints.asBoxConstraints(),
         ),
         parentUsesSize: true,
@@ -225,11 +226,15 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       if (header is RenderStickyHeaderLayoutBuilder) {
         double scrollPercentage =
             (headerPosition.abs() / _headerExtent).clamp(0.0, 1.0);
-        if (_oldScrollPercentage != scrollPercentage) {
-          _oldScrollPercentage = scrollPercentage;
+        bool isPinned = constraints.scrollOffset > 0.0 || constraints.remainingPaintExtent == constraints.viewportMainAxisExtent;
+
+        SliverStickyHeaderState state =
+            new SliverStickyHeaderState(scrollPercentage, isPinned);
+        if (_oldState != state) {
+          _oldState = state;
           header.layout(
             new StickyHeaderConstraints(
-              scrollPercentage: _oldScrollPercentage,
+              state: _oldState,
               boxConstraints: constraints.asBoxConstraints(),
             ),
             parentUsesSize: true,

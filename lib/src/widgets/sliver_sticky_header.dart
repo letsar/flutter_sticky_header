@@ -3,9 +3,37 @@ import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
 import 'package:flutter_sticky_header/src/widgets/sticky_header_layout_builder.dart';
 
 /// Signature used by [SliverStickyHeaderBuilder] to build the header
-/// when the percentage of scroll of the header has changed.
+/// when the sticky header state has changed.
 typedef Widget SliverStickyHeaderWidgetBuilder(
-    BuildContext context, double scrollPercentage);
+    BuildContext context, SliverStickyHeaderState state);
+
+/// State describing how a sticky header is rendered.
+@immutable
+class SliverStickyHeaderState {
+  const SliverStickyHeaderState(
+      this.scrollPercentage,
+      this.isPinned,
+      )   : assert(scrollPercentage != null),
+        assert(isPinned != null);
+
+  final double scrollPercentage;
+
+  final bool isPinned;
+
+  @override
+  bool operator ==(dynamic other) {
+    if (identical(this, other)) return true;
+    if (other is! SliverStickyHeaderState) return false;
+    final SliverStickyHeaderState typedOther = other;
+    return scrollPercentage == typedOther.scrollPercentage &&
+        isPinned == typedOther.isPinned;
+  }
+
+  @override
+  int get hashCode {
+    return hashValues(scrollPercentage, isPinned);
+  }
+}
 
 /// A sliver that displays a header before its sliver.
 /// The header scrolls off the viewport only when the sliver does.
@@ -92,8 +120,7 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
       overlapsContent: overlapsContent,
       sliver: sliver,
       header: new StickyHeaderLayoutBuilder(
-        builder: (context, constraints) =>
-            builder(context, constraints.scrollPercentage),
+        builder: (context, constraints) => builder(context, constraints.state),
       ),
     );
   }
