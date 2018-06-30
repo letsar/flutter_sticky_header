@@ -1,11 +1,12 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_sticky_header/src/widgets/sliver_sticky_header.dart';
 
 /// Immutable layout constraints for sticky header
 class StickyHeaderConstraints extends BoxConstraints {
   StickyHeaderConstraints({
-    this.scrollPercentage,
+    this.state,
     BoxConstraints boxConstraints,
-  })  : assert(scrollPercentage != null),
+  })  : assert(state != null),
         assert(boxConstraints != null),
         super(
           minWidth: boxConstraints.minWidth,
@@ -14,11 +15,13 @@ class StickyHeaderConstraints extends BoxConstraints {
           maxHeight: boxConstraints.maxHeight,
         );
 
-  final double scrollPercentage;
+  final SliverStickyHeaderState state;
 
   @override
   bool get isNormalized =>
-      scrollPercentage >= 0.0 && scrollPercentage <= 1.0 && super.isNormalized;
+      state.scrollPercentage >= 0.0 &&
+      state.scrollPercentage <= 1.0 &&
+      super.isNormalized;
 
   @override
   bool operator ==(dynamic other) {
@@ -27,7 +30,7 @@ class StickyHeaderConstraints extends BoxConstraints {
     if (other is! StickyHeaderConstraints) return false;
     final StickyHeaderConstraints typedOther = other;
     assert(typedOther.debugAssertIsValid());
-    return scrollPercentage == typedOther.scrollPercentage &&
+    return state == typedOther.state &&
         minWidth == typedOther.minWidth &&
         maxWidth == typedOther.maxWidth &&
         minHeight == typedOther.minHeight &&
@@ -37,7 +40,6 @@ class StickyHeaderConstraints extends BoxConstraints {
   @override
   int get hashCode {
     assert(debugAssertIsValid());
-    return hashValues(
-        minWidth, maxWidth, minHeight, maxHeight, scrollPercentage);
+    return hashValues(minWidth, maxWidth, minHeight, maxHeight, state);
   }
 }

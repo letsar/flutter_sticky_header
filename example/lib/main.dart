@@ -23,10 +23,12 @@ class MainScreen extends StatelessWidget {
 
     //slivers.add(_buildExample());
     //slivers.add(_buildBuilderExample());
-    slivers.addAll(_buildLists(0, 3));
-    slivers.addAll(_buildGrids(3, 3));
-    slivers.addAll(_buildSideHeaderGrids(6, 3));
-    slivers.addAll(_buildHeaderBuilderLists(9, 5));
+    int  i = 0;
+    slivers.addAll(_buildHeaderBuilderLists(i, i+=5));
+    slivers.addAll(_buildLists(i, i+=3));
+    slivers.addAll(_buildGrids(i, i+=3));
+    slivers.addAll(_buildSideHeaderGrids(i, i+=3));
+    slivers.addAll(_buildHeaderBuilderLists(i, i+=5));
 
     return new SimpleScaffold(
       title: 'Flutter Sticky Header example',
@@ -58,8 +60,8 @@ class MainScreen extends StatelessWidget {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeaderBuilder(
-        builder: (context, scrollPercentage) =>
-            _buildAnimatedHeader(sliverIndex, scrollPercentage),
+        builder: (context, state) =>
+            _buildAnimatedHeader(sliverIndex, state),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
             (context, i) => new ListTile(
@@ -175,10 +177,10 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAnimatedHeader(int index, double scrollPercentage) {
+  Widget _buildAnimatedHeader(int index, SliverStickyHeaderState state) {
     return new Container(
       height: 60.0,
-      color: Colors.lightBlue.withOpacity(1.0 - scrollPercentage),
+      color: (state.isPinned ? Colors.pink : Colors.lightBlue).withOpacity(1.0 - state.scrollPercentage),
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       alignment: Alignment.centerLeft,
       child: new Text(
@@ -216,9 +218,9 @@ class MainScreen extends StatelessWidget {
 
   Widget _buildBuilderExample() {
     return new SliverStickyHeaderBuilder(
-      builder: (context, scrollPercentage) => new Container(
+      builder: (context, state) => new Container(
             height: 60.0,
-            color: Colors.lightBlue.withOpacity(1.0 - scrollPercentage),
+            color: Colors.lightBlue.withOpacity(1.0 - state.scrollPercentage),
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.centerLeft,
             child: new Text(
