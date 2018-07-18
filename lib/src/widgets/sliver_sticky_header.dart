@@ -11,9 +11,9 @@ typedef Widget SliverStickyHeaderWidgetBuilder(
 @immutable
 class SliverStickyHeaderState {
   const SliverStickyHeaderState(
-      this.scrollPercentage,
-      this.isPinned,
-      )   : assert(scrollPercentage != null),
+    this.scrollPercentage,
+    this.isPinned,
+  )   : assert(scrollPercentage != null),
         assert(isPinned != null);
 
   final double scrollPercentage;

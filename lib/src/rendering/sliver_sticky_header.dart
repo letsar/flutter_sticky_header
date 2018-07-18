@@ -22,8 +22,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   }
 
   SliverStickyHeaderState _oldState;
-
   double _headerExtent;
+  bool _isPinned;
 
   bool get overlapsContent => _overlapsContent;
   bool _overlapsContent;
@@ -222,14 +222,17 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
               constraints.scrollOffset -
               (overlapsContent ? _headerExtent : 0.0));
 
+      _isPinned = constraints.scrollOffset > 0.0 ||
+          constraints.remainingPaintExtent ==
+              constraints.viewportMainAxisExtent;
+
       // second layout if scroll percentage changed and header is a RenderStickyHeaderLayoutBuilder.
       if (header is RenderStickyHeaderLayoutBuilder) {
         double scrollPercentage =
             (headerPosition.abs() / _headerExtent).clamp(0.0, 1.0);
-        bool isPinned = constraints.scrollOffset > 0.0 || constraints.remainingPaintExtent == constraints.viewportMainAxisExtent;
 
         SliverStickyHeaderState state =
-            new SliverStickyHeaderState(scrollPercentage, isPinned);
+            new SliverStickyHeaderState(scrollPercentage, _isPinned);
         if (_oldState != state) {
           _oldState = state;
           header.layout(
@@ -267,8 +270,15 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     assert(geometry.hitTestExtent > 0.0);
     if (header != null && mainAxisPosition <= _headerExtent) {
       return hitTestBoxChild(result, header,
-          mainAxisPosition: mainAxisPosition,
-          crossAxisPosition: crossAxisPosition);
+              mainAxisPosition: mainAxisPosition,
+              crossAxisPosition: crossAxisPosition) ||
+          (_overlapsContent &&
+              child != null &&
+              child.geometry.hitTestExtent > 0.0 &&
+              child.hitTest(result,
+                  mainAxisPosition:
+                      mainAxisPosition - childMainAxisPosition(child),
+                  crossAxisPosition: crossAxisPosition));
     } else if (child != null && child.geometry.hitTestExtent > 0.0) {
       return child.hitTest(result,
           mainAxisPosition: mainAxisPosition - childMainAxisPosition(child),
@@ -279,9 +289,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
   @override
   double childMainAxisPosition(RenderObject child) {
-    if (child == header) return -constraints.scrollOffset;
+    if (child == header) return _isPinned ? 0.0 : -constraints.scrollOffset;
     if (child == this.child)
-      return calculatePaintOffset(constraints, from: 0.0, to: _headerExtent);
+      return calculatePaintOffset(constraints,
+          from: 0.0, to: headerLogicalExtent);
     return null;
   }
 

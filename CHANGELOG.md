@@ -1,3 +1,7 @@
+## 0.3.1
+### Fixed
+* Hit test implementation (https://github.com/letsar/flutter_sticky_header/issues/7)
+
 ## 0.3.0
 ### Added
 * `SliverStickyHeaderState` class. This state has `scrollPercentage` and `isPinned` properties and it's passed to the `SliverStickyHeaderBuilder` when it changes.

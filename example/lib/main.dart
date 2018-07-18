@@ -19,24 +19,29 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return new SimpleScaffold(
+      title: 'Flutter Sticky Header example',
+      child: new Builder(builder: (BuildContext context) {
+        return new CustomScrollView(slivers: _buildSlivers(context));
+      }),
+    );
+  }
+
+  List<Widget> _buildSlivers(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
 
     //slivers.add(_buildExample());
     //slivers.add(_buildBuilderExample());
     int i = 0;
-    slivers.addAll(_buildHeaderBuilderLists(i, i += 5));
-    slivers.addAll(_buildLists(i, i += 3));
-    slivers.addAll(_buildGrids(i, i += 3));
-    slivers.addAll(_buildSideHeaderGrids(i, i += 3));
-    slivers.addAll(_buildHeaderBuilderLists(i, i += 5));
-
-    return new SimpleScaffold(
-      title: 'Flutter Sticky Header example',
-      child: new CustomScrollView(slivers: slivers),
-    );
+    slivers.addAll(_buildHeaderBuilderLists(context, i, i += 5));
+    slivers.addAll(_buildLists(context, i, i += 3));
+    slivers.addAll(_buildGrids(context, i, i += 3));
+    slivers.addAll(_buildSideHeaderGrids(context, i, i += 3));
+    slivers.addAll(_buildHeaderBuilderLists(context, i, i += 5));
+    return slivers;
   }
 
-  List<Widget> _buildLists(int firstIndex, int count) {
+  List<Widget> _buildLists(BuildContext context, int firstIndex, int count) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
@@ -56,11 +61,13 @@ class MainScreen extends StatelessWidget {
     });
   }
 
-  List<Widget> _buildHeaderBuilderLists(int firstIndex, int count) {
+  List<Widget> _buildHeaderBuilderLists(
+      BuildContext context, int firstIndex, int count) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeaderBuilder(
-        builder: (context, state) => _buildAnimatedHeader(sliverIndex, state),
+        builder: (context, state) =>
+            _buildAnimatedHeader(context, sliverIndex, state),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
             (context, i) => new ListTile(
@@ -76,7 +83,7 @@ class MainScreen extends StatelessWidget {
     });
   }
 
-  List<Widget> _buildGrids(int firstIndex, int count) {
+  List<Widget> _buildGrids(BuildContext context, int firstIndex, int count) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
@@ -85,19 +92,23 @@ class MainScreen extends StatelessWidget {
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
           delegate: new SliverChildBuilderDelegate(
-            (context, i) => new GridTile(
-                  child: Card(
-                    child: new Container(
-                      color: Colors.green,
+            (context, i) => GestureDetector(
+                  onTap: () => Scaffold.of(context).showSnackBar(
+                      new SnackBar(content: Text('Grid tile #$i'))),
+                  child: new GridTile(
+                    child: Card(
+                      child: new Container(
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                  footer: new Container(
-                    color: Colors.white.withOpacity(0.5),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: new Text(
-                        'Grid tile #$i',
-                        style: const TextStyle(color: Colors.black),
+                    footer: new Container(
+                      color: Colors.white.withOpacity(0.5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Text(
+                          'Grid tile #$i',
+                          style: const TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ),
@@ -109,12 +120,13 @@ class MainScreen extends StatelessWidget {
     });
   }
 
-  List<Widget> _buildSideHeaderGrids(int firstIndex, int count) {
+  List<Widget> _buildSideHeaderGrids(
+      BuildContext context, int firstIndex, int count) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
         overlapsContent: true,
-        header: _buildSideHeader(sliverIndex),
+        header: _buildSideHeader(context, sliverIndex),
         sliver: new SliverPadding(
           padding: new EdgeInsets.only(left: 60.0),
           sliver: new SliverGrid(
@@ -124,19 +136,23 @@ class MainScreen extends StatelessWidget {
                 mainAxisSpacing: 4.0,
                 childAspectRatio: 1.0),
             delegate: new SliverChildBuilderDelegate(
-              (context, i) => new GridTile(
-                    child: Card(
-                      child: new Container(
-                        color: Colors.orange,
+              (context, i) => GestureDetector(
+                    onTap: () => Scaffold.of(context).showSnackBar(
+                        new SnackBar(content: Text('Grid tile #$i'))),
+                    child: new GridTile(
+                      child: Card(
+                        child: new Container(
+                          color: Colors.orange,
+                        ),
                       ),
-                    ),
-                    footer: new Container(
-                      color: Colors.white.withOpacity(0.5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: new Text(
-                          'Grid tile #$i',
-                          style: const TextStyle(color: Colors.black),
+                      footer: new Container(
+                        color: Colors.white.withOpacity(0.5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Text(
+                            'Grid tile #$i',
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         ),
                       ),
                     ),
@@ -162,30 +178,45 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSideHeader(int index, {String text}) {
-    return new Container(
-      height: 60.0,
-      color: Colors.transparent,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      alignment: Alignment.centerLeft,
-      child: new CircleAvatar(
-        backgroundColor: Colors.orangeAccent,
-        foregroundColor: Colors.white,
-        child: new Text('$index'),
+  Widget _buildSideHeader(BuildContext context, int index, {String text}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: new SizedBox(
+          height: 44.0,
+          width: 44.0,
+          child: GestureDetector(
+            onTap: () => Scaffold
+                .of(context)
+                .showSnackBar(new SnackBar(content: Text('$index'))),
+            child: new CircleAvatar(
+              backgroundColor: Colors.orangeAccent,
+              foregroundColor: Colors.white,
+              child: new Text('$index'),
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildAnimatedHeader(int index, SliverStickyHeaderState state) {
-    return new Container(
-      height: 60.0,
-      color: (state.isPinned ? Colors.pink : Colors.lightBlue)
-          .withOpacity(1.0 - state.scrollPercentage),
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      alignment: Alignment.centerLeft,
-      child: new Text(
-        'Header #$index',
-        style: const TextStyle(color: Colors.white),
+  Widget _buildAnimatedHeader(
+      BuildContext context, int index, SliverStickyHeaderState state) {
+    return GestureDetector(
+      onTap: () => Scaffold
+          .of(context)
+          .showSnackBar(new SnackBar(content: Text('$index'))),
+      child: new Container(
+        height: 60.0,
+        color: (state.isPinned ? Colors.pink : Colors.lightBlue)
+            .withOpacity(1.0 - state.scrollPercentage),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        alignment: Alignment.centerLeft,
+        child: new Text(
+          'Header #$index',
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
