@@ -1,3 +1,7 @@
+## 0.3.2
+### Added
+* Dart 2 support
+
 ## 0.3.1
 ### Fixed
 * Hit test implementation (https://github.com/letsar/flutter_sticky_header/issues/7)

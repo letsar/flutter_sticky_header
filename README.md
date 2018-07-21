@@ -21,7 +21,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ```yaml
 dependencies:
   ...
-  flutter_sticky_header: "^0.3.1"
+  flutter_sticky_header: "^0.3.2"
 ```
 
 In your library add the following import:
