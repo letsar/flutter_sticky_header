@@ -22,7 +22,9 @@ class MainScreen extends StatelessWidget {
     return new SimpleScaffold(
       title: 'Flutter Sticky Header example',
       child: new Builder(builder: (BuildContext context) {
-        return new CustomScrollView(slivers: _buildSlivers(context));
+        return new CustomScrollView(
+          slivers: _buildSlivers(context),
+        );
       }),
     );
   }
@@ -33,6 +35,16 @@ class MainScreen extends StatelessWidget {
     //slivers.add(_buildExample());
     //slivers.add(_buildBuilderExample());
     int i = 0;
+    slivers.add(SliverAppBar(
+      backgroundColor: Colors.blue.withOpacity(0.5),
+      title: Text('text'),
+      pinned: true,
+    ));
+    slivers.add(SliverAppBar(
+      backgroundColor: Colors.yellow.withOpacity(0.5),
+      title: Text('text'),
+      pinned: true,
+    ));
     slivers.addAll(_buildHeaderBuilderLists(context, i, i += 5));
     slivers.addAll(_buildLists(context, i, i += 3));
     slivers.addAll(_buildGrids(context, i, i += 3));

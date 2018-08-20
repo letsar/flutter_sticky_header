@@ -217,19 +217,20 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       final SliverPhysicalParentData headerParentData = header.parentData;
       final childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
       double headerPosition = math.min(
-          0.0,
+          constraints.overlap,
           childScrollExtent -
               constraints.scrollOffset -
               (overlapsContent ? _headerExtent : 0.0));
 
-      _isPinned = constraints.scrollOffset > 0.0 ||
+      _isPinned = (constraints.scrollOffset + constraints.overlap) > 0.0 ||
           constraints.remainingPaintExtent ==
               constraints.viewportMainAxisExtent;
-
+      print('headerPosition=$headerPosition');
       // second layout if scroll percentage changed and header is a RenderStickyHeaderLayoutBuilder.
       if (header is RenderStickyHeaderLayoutBuilder) {
         double scrollPercentage =
-            (headerPosition.abs() / _headerExtent).clamp(0.0, 1.0);
+            ((headerPosition - constraints.overlap).abs() / _headerExtent)
+                .clamp(0.0, 1.0);
 
         SliverStickyHeaderState state =
             new SliverStickyHeaderState(scrollPercentage, _isPinned);
@@ -268,9 +269,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   bool hitTestChildren(HitTestResult result,
       {@required double mainAxisPosition, @required double crossAxisPosition}) {
     assert(geometry.hitTestExtent > 0.0);
-    if (header != null && mainAxisPosition <= _headerExtent) {
+    if (header != null &&
+        mainAxisPosition - constraints.overlap <= _headerExtent) {
       return hitTestBoxChild(result, header,
-              mainAxisPosition: mainAxisPosition,
+              mainAxisPosition: mainAxisPosition - constraints.overlap,
               crossAxisPosition: crossAxisPosition) ||
           (_overlapsContent &&
               child != null &&
@@ -289,7 +291,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
   @override
   double childMainAxisPosition(RenderObject child) {
-    if (child == header) return _isPinned ? 0.0 : -constraints.scrollOffset;
+    if (child == header)
+      return _isPinned
+          ? 0.0
+          : -(constraints.scrollOffset + constraints.overlap);
     if (child == this.child)
       return calculatePaintOffset(constraints,
           from: 0.0, to: headerLogicalExtent);
