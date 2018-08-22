@@ -1,3 +1,7 @@
+## 0.3.3
+### Added
+* Overlap support
+
 ## 0.3.2
 ### Added
 * Dart 2 support

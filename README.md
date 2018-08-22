@@ -12,7 +12,8 @@ A Flutter implementation of sticky headers with a sliver as a child.
 * Accepts one sliver as content.
 * Header can overlap its sliver (useful for sticky side header for example).
 * Notifies when the header scrolls outside the viewport.
-* Can scroll in any direction
+* Can scroll in any direction.
+* Supports overlapping (AppBars for example).
 
 ## Getting started
 
@@ -21,7 +22,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ```yaml
 dependencies:
   ...
-  flutter_sticky_header: "^0.3.2"
+  flutter_sticky_header: "^0.3.3"
 ```
 
 In your library add the following import:
