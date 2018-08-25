@@ -1,3 +1,7 @@
+## 0.3.4
+### Removed
+* Print call for headerPosition
+
 ## 0.3.3
 ### Added
 * Overlap support

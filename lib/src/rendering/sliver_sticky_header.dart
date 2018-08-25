@@ -225,7 +225,6 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       _isPinned = (constraints.scrollOffset + constraints.overlap) > 0.0 ||
           constraints.remainingPaintExtent ==
               constraints.viewportMainAxisExtent;
-      print('headerPosition=$headerPosition');
       // second layout if scroll percentage changed and header is a RenderStickyHeaderLayoutBuilder.
       if (header is RenderStickyHeaderLayoutBuilder) {
         double scrollPercentage =
