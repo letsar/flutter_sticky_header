@@ -50,7 +50,9 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.header,
     this.sliver,
     this.overlapsContent: false,
+    this.reverse: false,
   })  : assert(overlapsContent != null),
+        assert(reverse != null),
         super(key: key);
 
   /// The header to display before the sliver.
@@ -63,10 +65,13 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// instead of before.
   final bool overlapsContent;
 
+  final bool reverse;
+
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
     return new RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
+      reverse: reverse,
     );
   }
 
@@ -77,7 +82,9 @@ class SliverStickyHeader extends RenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderSliverStickyHeader renderObject) {
-    renderObject..overlapsContent = overlapsContent;
+    renderObject
+      ..overlapsContent = overlapsContent
+      ..reverse = reverse;
   }
 }
 
@@ -97,8 +104,10 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
     @required this.builder,
     this.sliver,
     this.overlapsContent: false,
+    this.reverse: false,
   })  : assert(builder != null),
         assert(overlapsContent != null),
+        assert(reverse != null),
         super(key: key);
 
   /// Called to build the [SliverStickyHeader]'s header.
@@ -114,10 +123,13 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
   /// instead of before.
   final bool overlapsContent;
 
+  final bool reverse;
+
   @override
   Widget build(BuildContext context) {
     return new SliverStickyHeader(
       overlapsContent: overlapsContent,
+      reverse: reverse,
       sliver: sliver,
       header: new StickyHeaderLayoutBuilder(
         builder: (context, constraints) => builder(context, constraints.state),
