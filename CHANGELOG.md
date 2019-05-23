@@ -1,3 +1,8 @@
+## 0.4.0
+
+* Updated SDK constraint to support new error message formats. 
+* Updated error message formats
+
 ## 0.3.4
 ### Removed
 * Print call for headerPosition

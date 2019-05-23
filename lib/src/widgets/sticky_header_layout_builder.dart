@@ -96,16 +96,16 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
           built = widget.builder(this, constraints);
           debugWidgetBuilderValue(widget, built);
         } catch (e, stack) {
-          built = ErrorWidget
-              .builder(_debugReportException('building $widget', e, stack));
+          built = ErrorWidget.builder(
+              _debugReportException('building $widget', e, stack));
         }
       }
       try {
         _child = updateChild(_child, built, null);
         assert(_child != null);
       } catch (e, stack) {
-        built = ErrorWidget
-            .builder(_debugReportException('building $widget', e, stack));
+        built = ErrorWidget.builder(
+            _debugReportException('building $widget', e, stack));
         _child = updateChild(null, built, slot);
       }
     });
@@ -141,10 +141,11 @@ FlutterErrorDetails _debugReportException(
   StackTrace stack,
 ) {
   final FlutterErrorDetails details = new FlutterErrorDetails(
-      exception: exception,
-      stack: stack,
-      library: 'flutter_sticky_header widgets library',
-      context: context);
+    exception: exception,
+    stack: stack,
+    library: 'flutter_sticky_header widgets library',
+    context: ErrorDescription('context'),
+  );
   FlutterError.reportError(details);
   return details;
 }
