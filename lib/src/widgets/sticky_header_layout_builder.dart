@@ -136,7 +136,7 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
 }
 
 FlutterErrorDetails _debugReportException(
-  String context,
+  dynamic context,
   dynamic exception,
   StackTrace stack,
 ) {
