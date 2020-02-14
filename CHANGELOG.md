@@ -1,3 +1,7 @@
+## 0.4.1
+### Added
+* A sticky parameter to specify whether the header is sticky or not.
+
 ## 0.4.0
 
 * Updated SDK constraint to support new error message formats. 

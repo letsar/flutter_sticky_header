@@ -2,8 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_constraints.dart';
 
-class RenderStickyHeaderLayoutBuilder extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox> {
+class RenderStickyHeaderLayoutBuilder extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   RenderStickyHeaderLayoutBuilder({
     LayoutCallback<StickyHeaderConstraints> callback,
   }) : _callback = callback;
@@ -23,8 +22,7 @@ class RenderStickyHeaderLayoutBuilder extends RenderBox
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
       if (!RenderObject.debugCheckingIntrinsics) {
-        throw new FlutterError(
-            'StickyHeaderLayoutBuilder does not support returning intrinsic dimensions.\n'
+        throw FlutterError('StickyHeaderLayoutBuilder does not support returning intrinsic dimensions.\n'
             'Calculating the intrinsic dimensions would require running the layout '
             'callback speculatively, which might mutate the live render object tree.');
       }
