@@ -10,27 +10,25 @@ void main() {
 
   testWidgets('Mix sticky and not sticky headers', (WidgetTester tester) async {
     await tester.pumpWidget(
-      RepaintBoundary(
-        child: MaterialApp(
-          home: Scaffold(
-            body: CustomScrollView(
-              cacheExtent: 0,
-              slivers: <Widget>[
-                SliverStickyHeader(
-                  header: _Header(index: 0),
-                  sliver: const _Sliver(),
-                ),
-                SliverStickyHeader(
-                  header: _Header(index: 1),
-                  sticky: false,
-                  sliver: const _Sliver(),
-                ),
-                SliverStickyHeader(
-                  header: _Header(index: 2),
-                  sliver: const _Sliver(),
-                ),
-              ],
-            ),
+      MaterialApp(
+        home: Scaffold(
+          body: CustomScrollView(
+            cacheExtent: 0,
+            slivers: <Widget>[
+              SliverStickyHeader(
+                header: _Header(index: 0),
+                sliver: const _Sliver(),
+              ),
+              SliverStickyHeader(
+                header: _Header(index: 1),
+                sticky: false,
+                sliver: const _Sliver(),
+              ),
+              SliverStickyHeader(
+                header: _Header(index: 2),
+                sliver: const _Sliver(),
+              ),
+            ],
           ),
         ),
       ),
@@ -212,20 +210,3 @@ class _SliverItem extends StatelessWidget {
     return SizedBox(height: 40);
   }
 }
-
-// class _IsOnScreen extends Matcher {
-//   const _IsOnScreen();
-
-//     @override
-//   bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) {
-//     finder.ev
-//     return _hasAncestorMatching(finder, (Widget widget) {
-//       if (widget is Offstage)
-//         return widget.offstage;
-//       return false;
-//     });
-//   }
-
-//   @override
-//   Description describe(Description description) => description.add('onscreen');
-// }

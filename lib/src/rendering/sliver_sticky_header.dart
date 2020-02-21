@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_constraints.dart';
@@ -16,10 +17,12 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     RenderSliver child,
     bool overlapsContent: false,
     bool sticky: true,
+    StickyHeaderController controller,
   })  : assert(overlapsContent != null),
         assert(sticky != null),
         _overlapsContent = overlapsContent,
-        _sticky = sticky {
+        _sticky = sticky,
+        _controller = controller {
     this.header = header;
     this.child = child;
   }
@@ -44,6 +47,17 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     if (_sticky == value) return;
     _sticky = value;
     markNeedsLayout();
+  }
+
+  StickyHeaderController get controller => _controller;
+  StickyHeaderController _controller;
+  set controller(StickyHeaderController value) {
+    if (_controller == value) return;
+    if (_controller != null && value != null) {
+      // We copy the state of the old controller.
+      value.stickyHeaderScrollOffset = _controller.stickyHeaderScrollOffset;
+    }
+    _controller = value;
   }
 
   /// The render object's header
@@ -218,11 +232,16 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       _isPinned = sticky &&
           ((constraints.scrollOffset + constraints.overlap) > 0.0 || constraints.remainingPaintExtent == constraints.viewportMainAxisExtent);
+
+      final double headerScrollRatio = ((headerPosition - constraints.overlap).abs() / _headerExtent);
+      if (_isPinned && headerScrollRatio <= 1) {
+        controller?.stickyHeaderScrollOffset = constraints.precedingScrollExtent;
+      }
       // second layout if scroll percentage changed and header is a RenderStickyHeaderLayoutBuilder.
       if (header is RenderStickyHeaderLayoutBuilder) {
-        double scrollPercentage = ((headerPosition - constraints.overlap).abs() / _headerExtent).clamp(0.0, 1.0);
+        double headerScrollRatioClamped = headerScrollRatio.clamp(0.0, 1.0);
 
-        SliverStickyHeaderState state = SliverStickyHeaderState(scrollPercentage, _isPinned);
+        SliverStickyHeaderState state = SliverStickyHeaderState(headerScrollRatioClamped, _isPinned);
         if (_oldState != state) {
           _oldState = state;
           header.layout(

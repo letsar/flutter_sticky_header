@@ -1,3 +1,7 @@
+## 0.4.2
+### Added
+* A StickyHeaderController to get the scroll offset of the current sticky header.
+
 ## 0.4.1
 ### Added
 * A sticky parameter to specify whether the header is sticky or not.

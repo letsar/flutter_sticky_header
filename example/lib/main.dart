@@ -6,6 +6,7 @@ import 'examples/not_sticky.dart';
 import 'examples/side_header.dart';
 import 'examples/animated_header.dart';
 import 'examples/reverse.dart';
+import 'examples/mix_slivers.dart';
 
 void main() => runApp(const App());
 
@@ -59,6 +60,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Reverse List Example',
             builder: (_) => const ReverseExample(),
+          ),
+          _Item(
+            text: 'Mixing other slivers',
+            builder: (_) => const MixSliversExample(),
           ),
         ],
       ),

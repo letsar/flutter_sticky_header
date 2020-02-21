@@ -9,6 +9,101 @@ typedef Widget SliverStickyHeaderWidgetBuilder(
   SliverStickyHeaderState state,
 );
 
+/// A
+class StickyHeaderController with ChangeNotifier {
+  /// The offset to use in order to jump to the first item
+  /// of current the sticky header.
+  ///
+  /// If there is no sticky headers, this is 0.
+  double get stickyHeaderScrollOffset => _stickyHeaderScrollOffset;
+  double _stickyHeaderScrollOffset = 0;
+
+  /// This setter should only be used by flutter_sticky_header package.
+  set stickyHeaderScrollOffset(double value) {
+    assert(value != null);
+    if (_stickyHeaderScrollOffset != value) {
+      _stickyHeaderScrollOffset = value;
+      notifyListeners();
+    }
+  }
+}
+
+/// The [StickyHeaderController] for descendant widgets that don't specify one
+/// explicitly.
+///
+/// [DefaultStickyHeaderController] is an inherited widget that is used to share a
+/// [StickyHeaderController] with [SliverStickyHeader]s. It's used when sharing an
+/// explicitly created [StickyHeaderController] isn't convenient because the sticky
+/// headers are created by a stateless parent widget or by different parent
+/// widgets.
+class DefaultStickyHeaderController extends StatefulWidget {
+  const DefaultStickyHeaderController({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  /// The widget below this widget in the tree.
+  ///
+  /// Typically a [Scaffold] whose [AppBar] includes a [TabBar].
+  ///
+  /// {@macro flutter.widgets.child}
+  final Widget child;
+
+  /// The closest instance of this class that encloses the given context.
+  ///
+  /// Typical usage:
+  ///
+  /// ```dart
+  /// StickyHeaderController controller = DefaultStickyHeaderController.of(context);
+  /// ```
+  static StickyHeaderController of(BuildContext context) {
+    final _StickyHeaderControllerScope scope = context.dependOnInheritedWidgetOfExactType<_StickyHeaderControllerScope>();
+    return scope?.controller;
+  }
+
+  @override
+  _DefaultStickyHeaderControllerState createState() => _DefaultStickyHeaderControllerState();
+}
+
+class _DefaultStickyHeaderControllerState extends State<DefaultStickyHeaderController> {
+  StickyHeaderController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = StickyHeaderController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _StickyHeaderControllerScope(
+      controller: _controller,
+      child: widget.child,
+    );
+  }
+}
+
+class _StickyHeaderControllerScope extends InheritedWidget {
+  const _StickyHeaderControllerScope({
+    Key key,
+    this.controller,
+    Widget child,
+  }) : super(key: key, child: child);
+
+  final StickyHeaderController controller;
+
+  @override
+  bool updateShouldNotify(_StickyHeaderControllerScope old) {
+    return controller != old.controller;
+  }
+}
+
 /// State describing how a sticky header is rendered.
 @immutable
 class SliverStickyHeaderState {
@@ -46,12 +141,16 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// the [sliver] scrolls off the viewport.
   ///
   /// The [overlapsContent] and [sticky] arguments must not be null.
+  ///
+  /// If a [StickyHeaderController] is not provided, then the value of [DefaultStickyHeaderController.of]
+  /// will be used.
   SliverStickyHeader({
     Key key,
     this.header,
     this.sliver,
     this.overlapsContent: false,
     this.sticky = true,
+    this.controller,
   })  : assert(overlapsContent != null),
         assert(sticky != null),
         super(key: key);
@@ -70,11 +169,18 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// Defaults to true.
   final bool sticky;
 
+  /// The controller used to interact with this sliver.
+  ///
+  /// If a [StickyHeaderController] is not provided, then the value of [DefaultStickyHeaderController.of]
+  /// will be used.
+  final StickyHeaderController controller;
+
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
     return RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
       sticky: sticky,
+      controller: controller ?? DefaultStickyHeaderController.of(context),
     );
   }
 
@@ -85,7 +191,8 @@ class SliverStickyHeader extends RenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderSliverStickyHeader renderObject) {
     renderObject
       ..overlapsContent = overlapsContent
-      ..sticky = sticky;
+      ..sticky = sticky
+      ..controller = controller ?? DefaultStickyHeaderController.of(context);
   }
 }
 
@@ -100,12 +207,16 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
   /// each time its scroll percentage changes.
   ///
   /// The [builder], [overlapsContent] and [sticky] arguments must not be null.
+  ///
+  /// If a [StickyHeaderController] is not provided, then the value of [DefaultStickyHeaderController.of]
+  /// will be used.
   const SliverStickyHeaderBuilder({
     Key key,
     @required this.builder,
     this.sliver,
     this.overlapsContent: false,
     this.sticky = true,
+    this.controller,
   })  : assert(builder != null),
         assert(overlapsContent != null),
         assert(sticky != null),
@@ -128,12 +239,19 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
   /// Defaults to true.
   final bool sticky;
 
+  /// The controller used to interact with this sliver.
+  ///
+  /// If a [StickyHeaderController] is not provided, then the value of [DefaultStickyHeaderController.of]
+  /// will be used.
+  final StickyHeaderController controller;
+
   @override
   Widget build(BuildContext context) {
     return SliverStickyHeader(
       overlapsContent: overlapsContent,
       sliver: sliver,
       sticky: sticky,
+      controller: controller,
       header: StickyHeaderLayoutBuilder(
         builder: (context, constraints) => builder(context, constraints.state),
       ),
