@@ -5,7 +5,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance.renderView.configuration = TestViewConfiguration(size: Size(400, 800));
+    WidgetsBinding.instance.renderView.configuration =
+        TestViewConfiguration(size: Size(400, 800));
   });
 
   testWidgets('Mix sticky and not sticky headers', (WidgetTester tester) async {
@@ -86,7 +87,8 @@ void main() {
     expect(header02Finder, findsNothing);
   });
 
-  testWidgets('Mix sticky and not sticky headers - reverse', (WidgetTester tester) async {
+  testWidgets('Mix sticky and not sticky headers - reverse',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -161,7 +163,8 @@ void main() {
 
     expect(header00Finder, findsNothing);
     // Header #1 is in the tree (because the sliver is onstage).
-    expect(tester.getRect(header01Finder), const Rect.fromLTRB(0, 800, 400, 880));
+    expect(
+        tester.getRect(header01Finder), const Rect.fromLTRB(0, 800, 400, 880));
     expect(header02Finder, findsNothing);
   });
 }

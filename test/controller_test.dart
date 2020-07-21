@@ -5,11 +5,14 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance.renderView.configuration = TestViewConfiguration(size: Size(400, 800));
+    WidgetsBinding.instance.renderView.configuration =
+        TestViewConfiguration(size: Size(400, 800));
   });
 
-  testWidgets('StickyHeaderController.stickyHeaderScrollOffset', (WidgetTester tester) async {
-    final StickyHeaderController stickyHeaderController = StickyHeaderController();
+  testWidgets('StickyHeaderController.stickyHeaderScrollOffset',
+      (WidgetTester tester) async {
+    final StickyHeaderController stickyHeaderController =
+        StickyHeaderController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(
@@ -97,8 +100,10 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(880));
   });
 
-  testWidgets('StickyHeaderController.stickyHeaderScrollOffset - reverse', (WidgetTester tester) async {
-    final StickyHeaderController stickyHeaderController = StickyHeaderController();
+  testWidgets('StickyHeaderController.stickyHeaderScrollOffset - reverse',
+      (WidgetTester tester) async {
+    final StickyHeaderController stickyHeaderController =
+        StickyHeaderController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(

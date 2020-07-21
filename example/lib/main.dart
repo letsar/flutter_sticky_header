@@ -86,12 +86,14 @@ class _Item extends StatelessWidget {
     return Card(
       color: Colors.blue,
       child: InkWell(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: builder)),
+        onTap: () =>
+            Navigator.push(context, MaterialPageRoute(builder: builder)),
         child: Container(
           padding: EdgeInsets.all(16),
           child: Text(
             text,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
       ),

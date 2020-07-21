@@ -41,7 +41,8 @@ class _FloatingActionButton extends StatelessWidget {
       child: Icon(Icons.adjust),
       backgroundColor: Colors.green,
       onPressed: () {
-        final double offset = DefaultStickyHeaderController.of(context).stickyHeaderScrollOffset;
+        final double offset =
+            DefaultStickyHeaderController.of(context).stickyHeaderScrollOffset;
         PrimaryScrollController.of(context).animateTo(
           offset,
           duration: Duration(milliseconds: 300),
