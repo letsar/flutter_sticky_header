@@ -3,7 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_constraints.dart';
 import 'package:flutter_sticky_header/src/rendering/sticky_header_layout_builder.dart';
 
-typedef Widget StickyHeaderLayoutWidgetBuilder(BuildContext context, StickyHeaderConstraints constraints);
+typedef Widget StickyHeaderLayoutWidgetBuilder(
+    BuildContext context, StickyHeaderConstraints constraints);
 
 /// Builds a widget tree that can depend on the [StickyHeaderConstraints].
 ///
@@ -24,16 +25,19 @@ class StickyHeaderLayoutBuilder extends RenderObjectWidget {
   final StickyHeaderLayoutWidgetBuilder builder;
 
   @override
-  RenderObjectElement createElement() => _StickyHeaderLayoutBuilderElement(this);
+  RenderObjectElement createElement() =>
+      _StickyHeaderLayoutBuilderElement(this);
 
   @override
-  RenderObject createRenderObject(BuildContext context) => RenderStickyHeaderLayoutBuilder();
+  RenderObject createRenderObject(BuildContext context) =>
+      RenderStickyHeaderLayoutBuilder();
 
   // updateRenderObject is redundant with the logic in the _StickyHeaderLayoutBuilderElement below.
 }
 
 class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
-  _StickyHeaderLayoutBuilderElement(StickyHeaderLayoutBuilder widget) : super(widget);
+  _StickyHeaderLayoutBuilderElement(StickyHeaderLayoutBuilder widget)
+      : super(widget);
 
   @override
   StickyHeaderLayoutBuilder get widget => super.widget;
@@ -52,6 +56,7 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
   void forgetChild(Element child) {
     assert(child == _child);
     _child = null;
+    super.forgetChild(child);
   }
 
   @override
@@ -74,7 +79,8 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
     // This gets called if markNeedsBuild() is called on us.
     // That might happen if, e.g., our builder uses Inherited widgets.
     renderObject.markNeedsLayout();
-    super.performRebuild(); // Calls widget.updateRenderObject (a no-op in this case).
+    super
+        .performRebuild(); // Calls widget.updateRenderObject (a no-op in this case).
   }
 
   @override
@@ -91,14 +97,16 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
           built = widget.builder(this, constraints);
           debugWidgetBuilderValue(widget, built);
         } catch (e, stack) {
-          built = ErrorWidget.builder(_debugReportException('building $widget', e, stack));
+          built = ErrorWidget.builder(
+              _debugReportException('building $widget', e, stack));
         }
       }
       try {
         _child = updateChild(_child, built, null);
         assert(_child != null);
       } catch (e, stack) {
-        built = ErrorWidget.builder(_debugReportException('building $widget', e, stack));
+        built = ErrorWidget.builder(
+            _debugReportException('building $widget', e, stack));
         _child = updateChild(null, built, slot);
       }
     });
@@ -106,7 +114,8 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
 
   @override
   void insertChildRenderObject(RenderObject child, slot) {
-    final RenderObjectWithChildMixin<RenderObject> renderObject = this.renderObject;
+    final RenderObjectWithChildMixin<RenderObject> renderObject =
+        this.renderObject;
     assert(slot == null);
     assert(renderObject.debugValidateChild(child));
     renderObject.child = child;

@@ -38,7 +38,8 @@ class _StickyHeaderGrid extends StatelessWidget {
       sliver: SliverPadding(
         padding: const EdgeInsets.only(left: 60),
         sliver: SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
           delegate: SliverChildBuilderDelegate(
             (context, i) => GridTile(
               child: Card(
@@ -90,6 +91,5 @@ class _SideHeader extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
