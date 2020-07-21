@@ -1,3 +1,7 @@
+## 0.4.4
+### Fixed
+* Static analysis issues.
+
 ## 0.4.3
 ### Fixed
 * Static analysis issues.
