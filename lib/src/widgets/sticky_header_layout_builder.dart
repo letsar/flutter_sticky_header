@@ -56,7 +56,6 @@ class _StickyHeaderLayoutBuilderElement extends RenderObjectElement {
   void forgetChild(Element child) {
     assert(child == _child);
     _child = null;
-    super.forgetChild(child);
   }
 
   @override
