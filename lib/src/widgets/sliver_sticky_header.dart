@@ -285,9 +285,9 @@ class SliverStickyHeaderRenderObjectElement extends RenderObjectElement {
 
   @override
   void forgetChild(Element child) {
+    super.forgetChild(child);
     if (child == _header) _header = null;
     if (child == _sliver) _sliver = null;
-    super.forgetChild(child);
   }
 
   @override

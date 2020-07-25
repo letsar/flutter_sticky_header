@@ -1,3 +1,7 @@
+## 0.4.5
+### Fixed
+* Null references issues in debug mode.
+
 ## 0.4.4
 ### Fixed
 * Static analysis issues.
