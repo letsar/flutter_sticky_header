@@ -4,8 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:flutter_sticky_header/src/rendering/sticky_header_constraints.dart';
-import 'package:flutter_sticky_header/src/rendering/sticky_header_layout_builder.dart';
+import 'package:value_layout_builder/value_layout_builder.dart';
 
 /// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
 ///
@@ -150,9 +149,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
     if (header != null) {
       header.layout(
-        StickyHeaderConstraints(
-          state: _oldState ?? SliverStickyHeaderState(0.0, false),
-          boxConstraints: constraints.asBoxConstraints(),
+        BoxValueConstraints<SliverStickyHeaderState>(
+          value: _oldState ?? SliverStickyHeaderState(0.0, false),
+          constraints: constraints.asBoxConstraints(),
         ),
         parentUsesSize: true,
       );
@@ -262,8 +261,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         controller?.stickyHeaderScrollOffset =
             constraints.precedingScrollExtent;
       }
-      // second layout if scroll percentage changed and header is a RenderStickyHeaderLayoutBuilder.
-      if (header is RenderStickyHeaderLayoutBuilder) {
+      // second layout if scroll percentage changed and header is a
+      // RenderStickyHeaderLayoutBuilder.
+      if (header is RenderConstrainedLayoutBuilder<
+          BoxValueConstraints<SliverStickyHeaderState>, RenderBox>) {
         double headerScrollRatioClamped = headerScrollRatio.clamp(0.0, 1.0);
 
         SliverStickyHeaderState state =
@@ -271,9 +272,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         if (_oldState != state) {
           _oldState = state;
           header.layout(
-            StickyHeaderConstraints(
-              state: _oldState,
-              boxConstraints: constraints.asBoxConstraints(),
+            BoxValueConstraints<SliverStickyHeaderState>(
+              value: _oldState,
+              constraints: constraints.asBoxConstraints(),
             ),
             parentUsesSize: true,
           );

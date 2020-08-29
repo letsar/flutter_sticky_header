@@ -32,7 +32,7 @@ class _StickyHeaderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverStickyHeaderBuilder(
+    return SliverStickyHeader.builder(
       builder: (context, state) => _AnimatedHeader(
         state: state,
         index: index,

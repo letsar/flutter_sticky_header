@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
-import 'package:flutter_sticky_header/src/widgets/sticky_header_layout_builder.dart';
+import 'package:value_layout_builder/value_layout_builder.dart';
 
-/// Signature used by [SliverStickyHeaderBuilder] to build the header
+/// Signature used by [SliverStickyHeader.builder] to build the header
 /// when the sticky header state has changed.
 typedef Widget SliverStickyHeaderWidgetBuilder(
   BuildContext context,
@@ -140,14 +140,15 @@ class SliverStickyHeaderState {
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
 class SliverStickyHeader extends RenderObjectWidget {
-  /// Creates a sliver that displays the [header] before its [sliver], unless [overlapsContent] it's true.
+  /// Creates a sliver that displays the [header] before its [sliver], unless
+  /// [overlapsContent] it's true.
   /// The [header] stays pinned when it hits the start of the viewport until
   /// the [sliver] scrolls off the viewport.
   ///
   /// The [overlapsContent] and [sticky] arguments must not be null.
   ///
-  /// If a [StickyHeaderController] is not provided, then the value of [DefaultStickyHeaderController.of]
-  /// will be used.
+  /// If a [StickyHeaderController] is not provided, then the value of
+  /// [DefaultStickyHeaderController.of] will be used.
   SliverStickyHeader({
     Key key,
     this.header,
@@ -158,6 +159,32 @@ class SliverStickyHeader extends RenderObjectWidget {
   })  : assert(overlapsContent != null),
         assert(sticky != null),
         super(key: key);
+
+  /// Creates a widget that builds the header of a [SliverStickyHeader]
+  /// each time its scroll percentage changes.
+  ///
+  /// The [builder], [overlapsContent] and [sticky] arguments must not be null.
+  ///
+  /// If a [StickyHeaderController] is not provided, then the value of
+  /// [DefaultStickyHeaderController.of] will be used.
+  SliverStickyHeader.builder({
+    Key key,
+    SliverStickyHeaderWidgetBuilder builder,
+    Widget sliver,
+    bool overlapsContent: false,
+    bool sticky = true,
+    StickyHeaderController controller,
+  }) : this(
+          key: key,
+          header: ValueLayoutBuilder<SliverStickyHeaderState>(
+            builder: (context, constraints) =>
+                builder(context, constraints.value),
+          ),
+          sliver: sliver,
+          overlapsContent: overlapsContent,
+          sticky: sticky,
+          controller: controller,
+        );
 
   /// The header to display before the sliver.
   final Widget header;
@@ -194,7 +221,9 @@ class SliverStickyHeader extends RenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderSliverStickyHeader renderObject) {
+    BuildContext context,
+    RenderSliverStickyHeader renderObject,
+  ) {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
@@ -208,6 +237,7 @@ class SliverStickyHeader extends RenderObjectWidget {
 /// This is useful if you want to change the header layout when it starts to scroll off the viewport.
 /// You cannot change the main axis extent of the header in this builder otherwise it could result
 /// in strange behavior.
+@Deprecated('Use SliverStickyHeader.builder instead.')
 class SliverStickyHeaderBuilder extends StatelessWidget {
   /// Creates a widget that builds the header of a [SliverStickyHeader]
   /// each time its scroll percentage changes.
@@ -258,8 +288,8 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
       sliver: sliver,
       sticky: sticky,
       controller: controller,
-      header: StickyHeaderLayoutBuilder(
-        builder: (context, constraints) => builder(context, constraints.state),
+      header: ValueLayoutBuilder<SliverStickyHeaderState>(
+        builder: (context, constraints) => builder(context, constraints.value),
       ),
     );
   }

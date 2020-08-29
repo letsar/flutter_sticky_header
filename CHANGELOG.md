@@ -1,3 +1,11 @@
+## 0.4.6
+### Added
+* A new SliverStickyHeader.builder constructor instead of the deprecated SliverStickyHeaderBuilder.
+* A dependency to value_layout_builder in order to manage the SliverStickyHeader.builder.
+
+### Removed
+* Custom code to make SliverStickyHeader.builder work.
+
 ## 0.4.5
 ### Fixed
 * Null references issues in debug mode.

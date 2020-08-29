@@ -24,7 +24,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ```yaml
 dependencies:
   ...
-  flutter_sticky_header: "^0.4.5"
+  flutter_sticky_header:
 ```
 
 In your library add the following import:
@@ -65,14 +65,14 @@ SliverStickyHeader(
 );
 ```
 
-## SliverStickyHeaderBuilder
+## SliverStickyHeader.builder
 
-If you want to change the header layout during its scroll, you can use the `SliverStickyHeaderBuilder`.
+If you want to change the header layout during its scroll, you can use the `SliverStickyHeader.builder` constructor.
 
 The example belows changes the opacity of the header as it scrolls off the viewport.
 
 ```dart
-SliverStickyHeaderBuilder(
+SliverStickyHeader.builder(
   builder: (context, state) => Container(
         height: 60.0,
         color: (state.isPinned ? Colors.pink : Colors.lightBlue)
@@ -99,6 +99,10 @@ SliverStickyHeaderBuilder(
 ```
 
 You can find more examples in the [Example](https://github.com/letsar/flutter_sticky_header/tree/master/example) project.
+
+## Sponsoring
+
+I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to sponsor me. By doing so, I will prioritize your issues or your pull-requests before the others. 
 
 ## Changelog
 
