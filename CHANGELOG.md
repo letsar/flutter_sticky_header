@@ -1,3 +1,7 @@
+## 0.5.0
+### Changed
+* The minimum version of Flutter.
+
 ## 0.4.6
 ### Added
 * A new SliverStickyHeader.builder constructor instead of the deprecated SliverStickyHeaderBuilder.
