@@ -166,7 +166,7 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// [DefaultStickyHeaderController.of] will be used.
   SliverStickyHeader.builder({
     Key? key,
-    SliverStickyHeaderWidgetBuilder? builder,
+    required SliverStickyHeaderWidgetBuilder builder,
     Widget? sliver,
     bool overlapsContent: false,
     bool sticky = true,
@@ -175,7 +175,7 @@ class SliverStickyHeader extends RenderObjectWidget {
           key: key,
           header: ValueLayoutBuilder<SliverStickyHeaderState>(
             builder: (context, constraints) =>
-                builder!(context, constraints.value),
+                builder(context, constraints.value),
           ),
           sliver: sliver,
           overlapsContent: overlapsContent,

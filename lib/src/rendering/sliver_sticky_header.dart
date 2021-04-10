@@ -122,7 +122,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     return result;
   }
 
-  double? computeHeaderExtent() {
+  double computeHeaderExtent() {
     if (header == null) return 0.0;
     assert(header!.hasSize);
     switch (constraints.axis) {
