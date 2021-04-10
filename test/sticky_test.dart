@@ -5,7 +5,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance.renderView.configuration =
+    WidgetsBinding.instance!.renderView.configuration =
         TestViewConfiguration(size: Size(400, 800));
   });
 
@@ -171,8 +171,8 @@ void main() {
 
 class _Header extends StatelessWidget {
   const _Header({
-    Key key,
-    @required this.index,
+    Key? key,
+    required this.index,
   }) : super(key: key);
 
   final int index;
@@ -189,7 +189,7 @@ class _Header extends StatelessWidget {
 
 class _Sliver extends StatelessWidget {
   const _Sliver({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -205,7 +205,7 @@ class _Sliver extends StatelessWidget {
 
 class _SliverItem extends StatelessWidget {
   const _SliverItem({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

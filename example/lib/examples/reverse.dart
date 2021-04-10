@@ -5,7 +5,7 @@ import '../common.dart';
 
 class ReverseExample extends StatelessWidget {
   const ReverseExample({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -25,11 +25,11 @@ class ReverseExample extends StatelessWidget {
 
 class _StickyHeaderList extends StatelessWidget {
   const _StickyHeaderList({
-    Key key,
+    Key? key,
     this.index,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {

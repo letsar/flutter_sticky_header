@@ -1,3 +1,9 @@
+## 0.6.0
+### Changed
+* Migrated to sound null-safety.
+* Increase the minimum version of Flutter.
+* Increase the minimum version of Dart SDK.
+
 ## 0.5.0
 ### Changed
 * The minimum version of Flutter.

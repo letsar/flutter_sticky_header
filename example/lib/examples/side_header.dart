@@ -5,7 +5,7 @@ import '../common.dart';
 
 class SideHeaderExample extends StatelessWidget {
   const SideHeaderExample({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -24,11 +24,11 @@ class SideHeaderExample extends StatelessWidget {
 
 class _StickyHeaderGrid extends StatelessWidget {
   const _StickyHeaderGrid({
-    Key key,
+    Key? key,
     this.index,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +68,11 @@ class _StickyHeaderGrid extends StatelessWidget {
 
 class _SideHeader extends StatelessWidget {
   const _SideHeader({
-    Key key,
+    Key? key,
     this.index,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
