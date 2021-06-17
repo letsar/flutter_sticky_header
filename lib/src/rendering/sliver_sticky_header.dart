@@ -229,9 +229,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
               overlap: math.min(
                 math.max(
                   0.0,
-                  constraints.scrollOffset - prev,
+                  constraints.scrollOffset - prev + constraints.overlap,
                 ),
-                headerExtent,
+                headerExtent + constraints.overlap,
               ),
               remainingPaintExtent: math.max(
                 0.0,

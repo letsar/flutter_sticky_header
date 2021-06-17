@@ -1,5 +1,6 @@
 import 'package:example/examples/double_list.dart';
 import 'package:example/examples/indented_header.dart';
+import 'package:example/examples/triple_indented_header.dart';
 import 'package:flutter/material.dart';
 
 import 'examples/animated_header.dart';
@@ -74,6 +75,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Indented Slivers List Example',
             builder: (_) => const IndentedHeaderExample(),
+          ),
+          _Item(
+            text: 'Triple Indented Slivers List Example',
+            builder: (_) => const TripleIndentedHeaderExample(),
           ),
         ],
       ),
