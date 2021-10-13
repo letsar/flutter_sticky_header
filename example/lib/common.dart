@@ -79,3 +79,35 @@ class Header extends StatelessWidget {
     );
   }
 }
+
+class HeaderWithButton extends StatelessWidget {
+  const HeaderWithButton({
+    Key? key,
+    this.index,
+    this.title,
+    this.color = Colors.lightBlue,
+  }) : super(key: key);
+
+  final String? title;
+  final int? index;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      color: color,
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      alignment: Alignment.centerLeft,
+      child: ElevatedButton(
+        onPressed: () {
+          print(title ?? 'Header #$index');
+        },
+        child: Text(
+          title ?? 'Header #$index',
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
