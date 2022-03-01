@@ -1,3 +1,7 @@
+## 0.6.1
+### Fixed
+* Error due to null-safety migration.
+
 ## 0.6.0
 ### Changed
 * Migrated to sound null-safety.

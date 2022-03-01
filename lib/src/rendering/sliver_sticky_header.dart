@@ -271,8 +271,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         if (_oldState != state) {
           _oldState = state;
           header!.layout(
-            BoxValueConstraints<SliverStickyHeaderState?>(
-              value: _oldState,
+            BoxValueConstraints<SliverStickyHeaderState>(
+              value: _oldState!,
               constraints: constraints.asBoxConstraints(),
             ),
             parentUsesSize: true,
