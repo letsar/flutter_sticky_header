@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'examples/animated_header.dart';
 import 'examples/grid.dart';
@@ -8,7 +9,10 @@ import 'examples/not_sticky.dart';
 import 'examples/reverse.dart';
 import 'examples/side_header.dart';
 
-void main() => runApp(const App());
+void main() {
+  // debugPaintPointersEnabled = true;
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({

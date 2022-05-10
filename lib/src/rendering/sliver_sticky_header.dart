@@ -303,14 +303,25 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   bool hitTestChildren(SliverHitTestResult result,
       {required double mainAxisPosition, required double crossAxisPosition}) {
     assert(geometry!.hitTestExtent > 0.0);
+    final double childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
+    final double headerPosition = sticky
+        ? math.min(
+            constraints.overlap,
+            childScrollExtent -
+                constraints.scrollOffset -
+                (overlapsContent ? _headerExtent! : 0.0))
+        : -constraints.scrollOffset;
+
     if (header != null &&
-        mainAxisPosition - constraints.overlap <= _headerExtent!) {
-      return hitTestBoxChild(
-            BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
-            header!,
-            mainAxisPosition: mainAxisPosition - constraints.overlap,
-            crossAxisPosition: crossAxisPosition,
-          ) ||
+        (mainAxisPosition - headerPosition) <= _headerExtent!) {
+      final didHitHeader = hitTestBoxChild(
+        BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
+        header!,
+        mainAxisPosition: childMainAxisPosition(header),
+        crossAxisPosition: crossAxisPosition,
+      );
+
+      return didHitHeader ||
           (_overlapsContent &&
               child != null &&
               child!.geometry!.hitTestExtent > 0.0 &&

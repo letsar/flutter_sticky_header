@@ -38,6 +38,9 @@ class _NotStickyList extends StatelessWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, i) => ListTile(
+            onTap: () {
+              print('tile $i');
+            },
             leading: CircleAvatar(
               child: Text('$index'),
             ),
