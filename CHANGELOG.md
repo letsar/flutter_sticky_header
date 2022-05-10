@@ -1,3 +1,7 @@
+## 0.6.2
+### Fixed
+* Hit Test on not sticky header
+
 ## 0.6.1
 ### Fixed
 * Error due to null-safety migration.
