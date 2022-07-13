@@ -1,5 +1,5 @@
+import 'package:example/examples/nested.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'examples/animated_header.dart';
 import 'examples/grid.dart';
@@ -68,6 +68,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Mixing other slivers',
             builder: (_) => const MixSliversExample(),
+          ),
+          _Item(
+            text: 'Nested sticky headers',
+            builder: (_) => const NestedExample(),
           ),
         ],
       ),

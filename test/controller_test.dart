@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance!.renderView.configuration =
+    WidgetsBinding.instance.renderView.configuration =
         TestViewConfiguration(size: Size(400, 800));
   });
 

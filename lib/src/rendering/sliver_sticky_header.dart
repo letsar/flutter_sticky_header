@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -178,7 +177,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         constraints.copyWith(
           scrollOffset: math.max(0.0, constraints.scrollOffset - headerExtent),
           cacheOrigin: math.min(0.0, constraints.cacheOrigin + headerExtent),
-          overlap: 0.0,
+          overlap: math.min(headerExtent, constraints.scrollOffset) +
+              (sticky ? constraints.overlap : 0),
           remainingPaintExtent:
               constraints.remainingPaintExtent - headerPaintExtent,
           remainingCacheExtent:
@@ -203,6 +203,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       geometry = SliverGeometry(
         scrollExtent: headerExtent + childLayoutGeometry.scrollExtent,
+        maxScrollObstructionExtent: sticky ? headerPaintExtent : 0,
         paintExtent: paintExtent,
         layoutExtent: math.min(
             headerPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),

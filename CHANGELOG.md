@@ -1,3 +1,7 @@
+## 0.6.4
+### Fixed
+* Not passing right overlap contraints to sliver child. Now we can create nested sticky headers!
+
 ## 0.6.3
 ### Fixed
 * Hit Test on not sticky header
