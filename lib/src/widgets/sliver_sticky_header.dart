@@ -171,6 +171,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     Widget? sliver,
     bool overlapsContent: false,
     bool sticky = true,
+    bool reverse = false,
     StickyHeaderController? controller,
   }) : this(
           key: key,
@@ -181,6 +182,7 @@ class SliverStickyHeader extends RenderObjectWidget {
           sliver: sliver,
           overlapsContent: overlapsContent,
           sticky: sticky,
+          reverse: reverse,
           controller: controller,
         );
 
