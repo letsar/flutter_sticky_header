@@ -14,11 +14,14 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     RenderObject? header,
     RenderSliver? child,
     bool overlapsContent: false,
+    bool reverse: false,
     bool sticky: true,
     StickyHeaderController? controller,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
-        _controller = controller {
+        _controller = controller,
+        _reverse = reverse
+  {
     this.header = header as RenderBox?;
     this.child = child;
   }
@@ -35,6 +38,16 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     _overlapsContent = value;
     markNeedsLayout();
   }
+
+  bool get reverse => _reverse;
+  bool _reverse;
+  set reverse(bool value) {
+    assert(value != null);
+    if (_reverse == value) return;
+    _reverse = value;
+    markNeedsLayout();
+  }
+
 
   bool get sticky => _sticky;
   bool _sticky;
@@ -145,6 +158,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     AxisDirection axisDirection = applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection);
 
+    if (reverse) axisDirection = flipAxisDirection(axisDirection);
+
     if (header != null) {
       header!.layout(
         BoxValueConstraints<SliverStickyHeaderState>(
@@ -178,7 +193,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
           scrollOffset: math.max(0.0, constraints.scrollOffset - headerExtent),
           cacheOrigin: math.min(0.0, constraints.cacheOrigin + headerExtent),
           overlap: math.min(headerExtent, constraints.scrollOffset) +
-              (sticky ? constraints.overlap : 0),
+              (sticky ? constraints.overlap : 0), // TODO: this was just '0'
           remainingPaintExtent:
               constraints.remainingPaintExtent - headerPaintExtent,
           remainingCacheExtent:
@@ -219,18 +234,22 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       final SliverPhysicalParentData? childParentData =
           child!.parentData as SliverPhysicalParentData?;
+
+      final double childStartOffset =
+      reverse ? headerExtent : headerPaintExtent;
+
       switch (axisDirection) {
         case AxisDirection.up:
           childParentData!.paintOffset = Offset.zero;
           break;
         case AxisDirection.right:
           childParentData!.paintOffset = Offset(
-              calculatePaintOffset(constraints, from: 0.0, to: headerExtent),
+              calculatePaintOffset(constraints, from: 0.0, to: childStartOffset),
               0.0);
           break;
         case AxisDirection.down:
           childParentData!.paintOffset = Offset(0.0,
-              calculatePaintOffset(constraints, from: 0.0, to: headerExtent));
+              calculatePaintOffset(constraints, from: 0.0, to: childStartOffset));
           break;
         case AxisDirection.left:
           childParentData!.paintOffset = Offset.zero;
