@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
+// import 'package:flutter_sticky_header/src/rendering/sliver_sticky_header.dart';
+import '../rendering/sliver_sticky_header.dart';
 import 'package:value_layout_builder/value_layout_builder.dart';
 
 /// Signature used by [SliverStickyHeader.builder] to build the header
