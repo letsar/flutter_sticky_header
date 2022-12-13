@@ -1,3 +1,7 @@
+## 0.6.5
+### Fixed
+*  Tap offset when overlaps is > 0.
+
 ## 0.6.4
 ### Fixed
 * Not passing right overlap contraints to sliver child. Now we can create nested sticky headers!
