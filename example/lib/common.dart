@@ -38,17 +38,17 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      child: Icon(Icons.adjust),
       backgroundColor: Colors.green,
       onPressed: () {
         final double offset =
             DefaultStickyHeaderController.of(context)!.stickyHeaderScrollOffset;
-        PrimaryScrollController.of(context)!.animateTo(
+        PrimaryScrollController.of(context).animateTo(
           offset,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
       },
+      child: const Icon(Icons.adjust),
     );
   }
 }
@@ -69,12 +69,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('hit $index');
+        debugPrint('hit $index');
       },
       child: Container(
         height: 60,
         color: color,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         alignment: Alignment.centerLeft,
         child: Text(
           title ?? 'Header #$index',

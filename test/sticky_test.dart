@@ -6,28 +6,28 @@ import 'package:sliver_tools/sliver_tools.dart';
 void main() {
   setUp(() {
     WidgetsBinding.instance.renderView.configuration =
-        TestViewConfiguration(size: Size(400, 800));
+        TestViewConfiguration(size: const Size(400, 800));
   });
 
   testWidgets('Mix sticky and not sticky headers', (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: CustomScrollView(
             cacheExtent: 0,
             slivers: <Widget>[
               SliverStickyHeader(
                 header: _Header(index: 0),
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
               SliverStickyHeader(
                 header: _Header(index: 1),
                 sticky: false,
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
               SliverStickyHeader(
                 header: _Header(index: 2),
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
             ],
           ),
@@ -43,10 +43,10 @@ void main() {
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
 
-    final gesture = await tester.startGesture(Offset(200, 100));
+    final gesture = await tester.startGesture(const Offset(200, 100));
 
     // We scroll just before the Header #1.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -54,7 +54,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll just after the Header #1 so that it is visible.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -62,7 +62,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Headers 0 and 1 are side by side.
-    await gesture.moveBy(Offset(0, -640));
+    await gesture.moveBy(const Offset(0, -640));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -70,7 +70,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Header #1 is at the top of the screen.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -78,7 +78,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Header #1 is not visible.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -90,7 +90,7 @@ void main() {
   testWidgets('Mix sticky and not sticky headers - reverse',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: CustomScrollView(
             cacheExtent: 0,
@@ -98,16 +98,16 @@ void main() {
             slivers: <Widget>[
               SliverStickyHeader(
                 header: _Header(index: 0),
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
               SliverStickyHeader(
                 header: _Header(index: 1),
                 sticky: false,
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
               SliverStickyHeader(
                 header: _Header(index: 2),
-                sliver: const _Sliver(),
+                sliver: _Sliver(),
               ),
             ],
           ),
@@ -123,10 +123,10 @@ void main() {
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
 
-    final gesture = await tester.startGesture(Offset(200, 100));
+    final gesture = await tester.startGesture(const Offset(200, 100));
 
     // We scroll just before the Header #1.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll just after the Header #1 so that it is visible.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -142,7 +142,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Headers 0 and 1 are side by side.
-    await gesture.moveBy(Offset(0, 640));
+    await gesture.moveBy(const Offset(0, 640));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -150,7 +150,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Header #1 is at the top of the screen.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -158,7 +158,7 @@ void main() {
     expect(header02Finder, findsNothing);
 
     // We scroll in a way that Header #1 is no longer visible.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -176,24 +176,24 @@ void main() {
             cacheExtent: 0,
             slivers: <Widget>[
               SliverStickyHeader(
-                header: _HierarchyHeader(hierarchy: '1'),
+                header: const _HierarchyHeader(hierarchy: '1'),
                 sliver: MultiSliver(
                   children: [
-                    SliverStickyHeader(
+                    const SliverStickyHeader(
                       header: _HierarchyHeader(hierarchy: '1.1'),
-                      sliver: const _Sliver100(),
+                      sliver: _Sliver100(),
                     ),
                     SliverStickyHeader(
-                      header: _HierarchyHeader(hierarchy: '1.2'),
+                      header: const _HierarchyHeader(hierarchy: '1.2'),
                       sliver: MultiSliver(
-                        children: [
+                        children: const [
                           SliverStickyHeader(
                             header: _HierarchyHeader(hierarchy: '1.2.1'),
-                            sliver: const _Sliver100(),
+                            sliver: _Sliver100(),
                           ),
                           SliverStickyHeader(
                             header: _HierarchyHeader(hierarchy: '1.2.2'),
-                            sliver: const _Sliver100(),
+                            sliver: _Sliver100(),
                           ),
                         ],
                       ),
@@ -201,21 +201,21 @@ void main() {
                   ],
                 ),
               ),
-              SliverStickyHeader(
+              const SliverStickyHeader(
                 header: _HierarchyHeader(hierarchy: '2'),
-                sliver: const _Sliver100(),
+                sliver: _Sliver100(),
               ),
               SliverStickyHeader(
-                header: _HierarchyHeader(hierarchy: '3'),
+                header: const _HierarchyHeader(hierarchy: '3'),
                 sliver: MultiSliver(
-                  children: [
+                  children: const [
                     SliverStickyHeader(
                       header: _HierarchyHeader(hierarchy: '3.1'),
-                      sliver: const _Sliver100(),
+                      sliver: _Sliver100(),
                     ),
                     SliverStickyHeader(
                       header: _HierarchyHeader(hierarchy: '3.2'),
-                      sliver: const _Sliver100(),
+                      sliver: _Sliver100(),
                     ),
                   ],
                 ),
@@ -241,22 +241,22 @@ void main() {
     expect(tester.getTopLeft(header121Finder).dy, 250);
 
     // We scroll a little and expect that header 1 is sticky.
-    final gesture = await tester.startGesture(Offset(200, 100));
-    await gesture.moveBy(Offset(0, -25));
+    final gesture = await tester.startGesture(const Offset(200, 100));
+    await gesture.moveBy(const Offset(0, -25));
     await tester.pump();
 
     expect(tester.getTopLeft(header011Finder).dy, 50);
     expect(tester.getTopLeft(header012Finder).dy, 175);
     expect(tester.getTopLeft(header121Finder).dy, 225);
 
-    await gesture.moveBy(Offset(0, -125));
+    await gesture.moveBy(const Offset(0, -125));
     await tester.pump();
 
     expect(tester.getTopLeft(header011Finder).dy, 0);
     expect(tester.getTopLeft(header012Finder).dy, 50);
     expect(tester.getTopLeft(header121Finder).dy, 100);
 
-    await gesture.moveBy(Offset(0, -25));
+    await gesture.moveBy(const Offset(0, -25));
     await tester.pump();
 
     expect(tester.getTopLeft(header012Finder).dy, 50);
@@ -276,8 +276,8 @@ class _HierarchyHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Text('Header $hierarchy'),
       height: 50,
+      child: Text('Header $hierarchy'),
     );
   }
 }
@@ -289,7 +289,7 @@ class _Sliver100 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return const SliverToBoxAdapter(
       child: SizedBox(height: 100),
     );
   }
@@ -307,8 +307,8 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Text('Header #$index'),
       height: 80,
+      child: Text('Header #$index'),
     );
   }
 }
@@ -336,6 +336,6 @@ class _SliverItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 40);
+    return const SizedBox(height: 40);
   }
 }

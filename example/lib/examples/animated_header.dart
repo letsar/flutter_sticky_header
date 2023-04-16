@@ -10,7 +10,7 @@ class AnimatedHeaderExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       title: 'Animated header Example',
       slivers: [
         _StickyHeaderList(index: 0),

@@ -13,7 +13,7 @@ class MixSliversExample extends StatelessWidget {
     return AppScaffold(
       title: 'List Example',
       slivers: [
-        SliverAppBar(
+        const SliverAppBar(
           backgroundColor: Colors.orange,
           title: Text('SliverAppBar'),
           automaticallyImplyLeading: false,
@@ -25,10 +25,10 @@ class MixSliversExample extends StatelessWidget {
             color: Colors.red,
           ),
         ),
-        _StickyHeaderList(index: 0),
-        _StickyHeaderList(index: 1),
-        _StickyHeaderList(index: 2),
-        _StickyHeaderList(index: 3),
+        const _StickyHeaderList(index: 0),
+        const _StickyHeaderList(index: 1),
+        const _StickyHeaderList(index: 2),
+        const _StickyHeaderList(index: 3),
       ],
     );
   }

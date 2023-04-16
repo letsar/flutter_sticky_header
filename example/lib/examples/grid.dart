@@ -10,7 +10,7 @@ class GridExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       title: 'Grid Example',
       slivers: [
         _StickyHeaderGrid(index: 0),
@@ -35,15 +35,10 @@ class _StickyHeaderGrid extends StatelessWidget {
     return SliverStickyHeader(
       header: Header(index: index),
       sliver: SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
         delegate: SliverChildBuilderDelegate(
           (context, i) => GridTile(
-            child: Card(
-              child: Container(
-                color: Colors.green,
-              ),
-            ),
             footer: Container(
               color: Colors.white.withOpacity(0.5),
               child: Padding(
@@ -52,6 +47,11 @@ class _StickyHeaderGrid extends StatelessWidget {
                   'Grid tile #$i',
                   style: const TextStyle(color: Colors.black),
                 ),
+              ),
+            ),
+            child: Card(
+              child: Container(
+                color: Colors.green,
               ),
             ),
           ),
