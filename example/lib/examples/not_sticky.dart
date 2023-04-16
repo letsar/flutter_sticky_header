@@ -10,7 +10,7 @@ class NotStickyExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       title: 'Not Sticky Example',
       slivers: [
         _NotStickyList(index: 0),
@@ -39,7 +39,7 @@ class _NotStickyList extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, i) => ListTile(
             onTap: () {
-              print('tile $i');
+              debugPrint('tile $i');
             },
             leading: CircleAvatar(
               child: Text('$index'),

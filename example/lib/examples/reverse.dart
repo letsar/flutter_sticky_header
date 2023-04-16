@@ -10,7 +10,7 @@ class ReverseExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       reverse: true,
       title: 'Reverse Example',
       slivers: [

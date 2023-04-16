@@ -21,9 +21,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Sticky Headers',
-      home: const _Home(),
+      home: _Home(),
     );
   }
 }
@@ -37,7 +37,7 @@ class _Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Sticky Headers'),
+        title: const Text('Flutter Sticky Headers'),
       ),
       body: ListView(
         children: <Widget>[
@@ -97,10 +97,10 @@ class _Item extends StatelessWidget {
         onTap: () =>
             Navigator.push(context, MaterialPageRoute(builder: builder)),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),

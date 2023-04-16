@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 void main() {
-  runApp(MaterialApp(home: TabHeaderExample()));
+  runApp(const MaterialApp(home: TabHeaderExample()));
 }
 
 class TabHeaderExample extends StatefulWidget {
@@ -17,9 +17,9 @@ class _TabHeaderExampleState extends State<TabHeaderExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tab List Example'),
+        title: const Text('Tab List Example'),
       ),
-      body: CustomScrollView(
+      body: const CustomScrollView(
         slivers: [
           _StickyHeaderList(index: 0),
           _StickyHeaderList(index: 1),
@@ -66,21 +66,21 @@ class _StickyHeaderListState extends State<_StickyHeaderList>
                 indicatorColor: const Color(0xFF216DDF),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorWeight: 2,
-                indicatorPadding: EdgeInsets.only(bottom: 10),
+                indicatorPadding: const EdgeInsets.only(bottom: 10),
                 unselectedLabelColor: const Color(0xFF888888),
-                unselectedLabelStyle: TextStyle(fontSize: 17),
+                unselectedLabelStyle: const TextStyle(fontSize: 17),
                 labelColor: const Color(0xFF216DDF),
                 labelStyle:
-                    TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 tabs: _createTabs(),
                 onTap: (index) {
-                  print(index);
+                  debugPrint(index.toString());
                 },
               ),
             ),
             InkWell(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.red,
                   boxShadow: [
                     BoxShadow(
@@ -90,20 +90,19 @@ class _StickyHeaderListState extends State<_StickyHeaderList>
                     ),
                   ],
                 ),
-                padding: EdgeInsets.only(left: 5, right: 12),
+                padding: const EdgeInsets.only(left: 5, right: 12),
                 child: Row(
-                  children: [
+                  children: const [
                     Text(
                       "全部",
-                      style: TextStyle(
-                          color: const Color(0xFF101010), fontSize: 17),
+                      style: TextStyle(color: Color(0xFF101010), fontSize: 17),
                     ),
                   ],
                 ),
               ),
               onTap: () {
                 // Can not response
-                print("1234567");
+                debugPrint("1234567");
               },
             ),
           ],
@@ -113,7 +112,7 @@ class _StickyHeaderListState extends State<_StickyHeaderList>
         delegate: SliverChildBuilderDelegate(
           (context, i) => ListTile(
             onTap: () {
-              print('tile $i');
+              debugPrint('tile $i');
             },
             leading: CircleAvatar(
               child: Text('${widget.index}'),

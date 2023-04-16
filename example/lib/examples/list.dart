@@ -10,7 +10,7 @@ class ListExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       title: 'List Example',
       slivers: [
         _StickyHeaderList(index: 0),
@@ -38,7 +38,7 @@ class _StickyHeaderList extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, i) => ListTile(
             onTap: () {
-              print('tile $i');
+              debugPrint('tile $i');
             },
             leading: CircleAvatar(
               child: Text('$index'),
