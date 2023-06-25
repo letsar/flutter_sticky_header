@@ -134,9 +134,9 @@ class SliverStickyHeaderState {
   }
 }
 
-enum SliverStickyHeaderLocation {
+enum SliverStickyHeaderActivity {
   pushed,
-  notPinned,
+  unpinned,
   pinned,
   settling,
 }
