@@ -140,14 +140,14 @@ typedef SliverStickyHeaderActivityHandler = void Function(
 
 /// An event that is dispatched when a sticky header changes its position meaningfully.
 enum SliverStickyHeaderActivity {
-  /// Dispatched when the sticky header is completely pushed
+  /// Dispatched when the [settling] sticky header is completely pushed
   /// out of the viewport by the subsequent header.
   pushed,
 
-  /// Dispatched when the sticky header is unpinned.
+  /// Dispatched when the [pinned] sticky header is unpinned.
   unpinned,
 
-  /// Dispatched when the sticky header begins to be pinned.
+  /// Dispatched when the sticky header is pinned.
   pinned,
 
   /// Dispatched when the [pushed] sticky header begins to push off the
