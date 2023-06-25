@@ -134,13 +134,23 @@ class SliverStickyHeaderState {
   }
 }
 
+/// A callback that handles a [SliverStickyHeaderActivity].
 typedef SliverStickyHeaderActivityHandler = void Function(
     SliverStickyHeaderActivity activity);
 
+/// An event that is dispatched when a sticky header changes its position meaningfully.
 enum SliverStickyHeaderActivity {
+  /// Dispatched when the sticky header is completely pushed
+  /// out of the viewport by the subsequent header.
   pushed,
+
+  /// Dispatched when the sticky header is unpinned.
   unpinned,
+
+  /// Dispatched when the sticky header begin to be pinned.
   pinned,
+
+  /// Dispatched when the sticky header begins to be pushed by the subsequent header.
   settling,
 }
 
@@ -216,6 +226,7 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// will be used.
   final StickyHeaderController? controller;
 
+  /// A callback invoked when a [SliverStickyHeaderActivity] is dispatched.
   final SliverStickyHeaderActivityHandler? activityHandler;
 
   @override
