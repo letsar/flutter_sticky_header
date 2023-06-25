@@ -267,7 +267,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
             constraints.precedingScrollExtent;
       }
 
-      _tryNotifyActivity(headerScrollRatio);
+      _updateActivity(headerScrollRatio);
 
       // second layout if scroll percentage changed and header is a
       // RenderStickyHeaderLayoutBuilder.
@@ -308,7 +308,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     }
   }
 
-  void _tryNotifyActivity(double headerScrollRatio) {
+  void _updateActivity(double headerScrollRatio) {
     final SliverStickyHeaderActivity activity;
     if (_isPinned) {
       if (headerScrollRatio >= 1) {
