@@ -134,6 +134,9 @@ class SliverStickyHeaderState {
   }
 }
 
+typedef SliverStickyHeaderActivityHandler = void Function(
+    SliverStickyHeaderActivity activity);
+
 enum SliverStickyHeaderActivity {
   pushed,
   unpinned,
@@ -162,6 +165,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.overlapsContent: false,
     this.sticky = true,
     this.controller,
+    this.activityHandler,
   }) : super(key: key);
 
   /// Creates a widget that builds the header of a [SliverStickyHeader]
@@ -178,6 +182,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     bool overlapsContent: false,
     bool sticky = true,
     StickyHeaderController? controller,
+    SliverStickyHeaderActivityHandler? activityHandler,
   }) : this(
           key: key,
           header: ValueLayoutBuilder<SliverStickyHeaderState>(
@@ -188,6 +193,7 @@ class SliverStickyHeader extends RenderObjectWidget {
           overlapsContent: overlapsContent,
           sticky: sticky,
           controller: controller,
+          activityHandler: activityHandler,
         );
 
   /// The header to display before the sliver.
@@ -210,12 +216,15 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// will be used.
   final StickyHeaderController? controller;
 
+  final SliverStickyHeaderActivityHandler? activityHandler;
+
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
     return RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
       sticky: sticky,
       controller: controller ?? DefaultStickyHeaderController.of(context),
+      activityHandler: activityHandler,
     );
   }
 
@@ -231,7 +240,8 @@ class SliverStickyHeader extends RenderObjectWidget {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
-      ..controller = controller ?? DefaultStickyHeaderController.of(context);
+      ..controller = controller ?? DefaultStickyHeaderController.of(context)
+      ..activityHandler = activityHandler;
   }
 }
 

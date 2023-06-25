@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:value_layout_builder/value_layout_builder.dart';
 
@@ -16,12 +17,16 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     bool overlapsContent: false,
     bool sticky: true,
     StickyHeaderController? controller,
+    this.activityHandler,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
         _controller = controller {
     this.header = header as RenderBox?;
     this.child = child;
   }
+
+  SliverStickyHeaderActivityHandler? activityHandler;
+  SliverStickyHeaderActivity? _lastReportedActivity;
 
   SliverStickyHeaderState? _oldState;
   double? _headerExtent;
@@ -261,6 +266,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         controller?.stickyHeaderScrollOffset =
             constraints.precedingScrollExtent;
       }
+
+      _tryNotifyActivity(headerScrollRatio);
+
       // second layout if scroll percentage changed and header is a
       // RenderStickyHeaderLayoutBuilder.
       if (header is RenderConstrainedLayoutBuilder<
@@ -298,6 +306,32 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
           break;
       }
     }
+  }
+
+  void _tryNotifyActivity(double headerScrollRatio) {
+    final SliverStickyHeaderActivity location;
+    if (_isPinned) {
+      if (headerScrollRatio >= 1) {
+        location = SliverStickyHeaderActivity.pushed;
+      } else if (headerScrollRatio > 0) {
+        location = SliverStickyHeaderActivity.settling;
+      } else {
+        location = SliverStickyHeaderActivity.pinned;
+      }
+    } else {
+      location = SliverStickyHeaderActivity.unpinned;
+    }
+
+    if (activityHandler != null &&
+        _lastReportedActivity != null &&
+        location != _lastReportedActivity) {
+      WidgetsBinding.instance.scheduleTask(
+        () => activityHandler?.call(location),
+        Priority.touch,
+      );
+    }
+
+    _lastReportedActivity = location;
   }
 
   @override
