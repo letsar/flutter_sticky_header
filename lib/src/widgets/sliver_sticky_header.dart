@@ -147,7 +147,7 @@ enum SliverStickyHeaderActivity {
   /// Dispatched when the sticky header is unpinned.
   unpinned,
 
-  /// Dispatched when the sticky header begin to be pinned.
+  /// Dispatched when the sticky header begins to be pinned.
   pinned,
 
   /// Dispatched when the sticky header begins to be pushed by the subsequent header.

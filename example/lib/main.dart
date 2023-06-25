@@ -67,7 +67,7 @@ class _Home extends StatelessWidget {
             builder: (_) => const ReverseExample(),
           ),
           _Item(
-            text: 'Activity Header Example',
+            text: 'Activity Handler Example',
             builder: (_) => const ActivityHandlerExample(),
           ),
           _Item(
