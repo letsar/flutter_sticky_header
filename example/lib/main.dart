@@ -1,3 +1,4 @@
+import 'package:example/examples/activity_handler.dart';
 import 'package:example/examples/nested.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Reverse List Example',
             builder: (_) => const ReverseExample(),
+          ),
+          _Item(
+            text: 'Activity Header Example',
+            builder: (_) => const ActivityHandlerExample(),
           ),
           _Item(
             text: 'Mixing other slivers',
