@@ -134,6 +134,13 @@ class SliverStickyHeaderState {
   }
 }
 
+enum SliverStickyHeaderLocation {
+  pushed,
+  notPinned,
+  pinned,
+  settling,
+}
+
 /// A sliver that displays a header before its sliver.
 /// The header scrolls off the viewport only when the sliver does.
 ///
