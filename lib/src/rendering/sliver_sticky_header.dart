@@ -309,29 +309,29 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   }
 
   void _tryNotifyActivity(double headerScrollRatio) {
-    final SliverStickyHeaderActivity location;
+    final SliverStickyHeaderActivity activity;
     if (_isPinned) {
       if (headerScrollRatio >= 1) {
-        location = SliverStickyHeaderActivity.pushed;
+        activity = SliverStickyHeaderActivity.pushed;
       } else if (headerScrollRatio > 0) {
-        location = SliverStickyHeaderActivity.settling;
+        activity = SliverStickyHeaderActivity.settling;
       } else {
-        location = SliverStickyHeaderActivity.pinned;
+        activity = SliverStickyHeaderActivity.pinned;
       }
     } else {
-      location = SliverStickyHeaderActivity.unpinned;
+      activity = SliverStickyHeaderActivity.unpinned;
     }
 
     if (activityHandler != null &&
         _lastReportedActivity != null &&
-        location != _lastReportedActivity) {
+        activity != _lastReportedActivity) {
       WidgetsBinding.instance.scheduleTask(
-        () => activityHandler?.call(location),
+        () => activityHandler?.call(activity),
         Priority.touch,
       );
     }
 
-    _lastReportedActivity = location;
+    _lastReportedActivity = activity;
   }
 
   @override
