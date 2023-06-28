@@ -310,16 +310,14 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
   void _updateActivity(double headerScrollRatio) {
     final SliverStickyHeaderActivity activity;
-    if (_isPinned) {
-      if (headerScrollRatio >= 1) {
-        activity = SliverStickyHeaderActivity.pushed;
-      } else if (headerScrollRatio > 0) {
-        activity = SliverStickyHeaderActivity.settling;
-      } else {
-        activity = SliverStickyHeaderActivity.pinned;
-      }
-    } else {
+    if (!_isPinned) {
       activity = SliverStickyHeaderActivity.unpinned;
+    } else if (headerScrollRatio >= 1.0) {
+      activity = SliverStickyHeaderActivity.pushed;
+    } else if (headerScrollRatio > 0.0) {
+      activity = SliverStickyHeaderActivity.settling;
+    } else {
+      activity = SliverStickyHeaderActivity.pinned;
     }
 
     if (activityHandler != null &&
