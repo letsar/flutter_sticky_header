@@ -1,7 +1,6 @@
 name: flutter_sticky_header
-description: Flutter implementation of sticky headers as a sliver. Use it in a CustomScrollView.
+description: Flutter implementation of sticky headers as a sliver. Use it in a CustomScrollView. Forked by VeriFi.
 version: 0.6.5
-homepage: https://github.com/letsar/flutter_sticky_header
 
 dependencies:
   flutter:
@@ -14,5 +13,5 @@ dev_dependencies:
   sliver_tools: ^0.2.7
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: '>=1.24.0-10.2.pre'
+  sdk: ">=3.3.4 <4.0.0"
+  flutter: ">=3.19.0"
