@@ -33,6 +33,7 @@ dependencies:
   sliver_tools: ^0.2.7
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 

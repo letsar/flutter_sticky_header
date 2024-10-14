@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   setUp(() {
     WidgetsBinding.instance.renderView.configuration =
-        TestViewConfiguration(size: Size(400, 800));
+        TestViewConfiguration(size: const Size(400, 800));
   });
 
   testWidgets('StickyHeaderController.stickyHeaderScrollOffset',
@@ -22,17 +22,17 @@ void main() {
             controller: scrollController,
             slivers: <Widget>[
               SliverStickyHeader(
-                header: _Header(index: 0),
+                header: const _Header(index: 0),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
               SliverStickyHeader(
-                header: _Header(index: 1),
+                header: const _Header(index: 1),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
               SliverStickyHeader(
-                header: _Header(index: 2),
+                header: const _Header(index: 2),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
@@ -51,10 +51,10 @@ void main() {
     expect(header02Finder, findsNothing);
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
-    final gesture = await tester.startGesture(Offset(200, 100));
+    final gesture = await tester.startGesture(const Offset(200, 100));
 
     // We scroll just before the Header #1.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -63,7 +63,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll just after the Header #1 so that it is visible.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -72,7 +72,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll in a way that Headers 0 and 1 are side by side.
-    await gesture.moveBy(Offset(0, -640));
+    await gesture.moveBy(const Offset(0, -640));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -81,7 +81,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll in a way that Header #1 is at the top of the screen.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -90,7 +90,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(880));
 
     // We scroll in a way that Header #1 is not visible.
-    await gesture.moveBy(Offset(0, -80));
+    await gesture.moveBy(const Offset(0, -80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -114,17 +114,17 @@ void main() {
             reverse: true,
             slivers: <Widget>[
               SliverStickyHeader(
-                header: _Header(index: 0),
+                header: const _Header(index: 0),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
               SliverStickyHeader(
-                header: _Header(index: 1),
+                header: const _Header(index: 1),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
               SliverStickyHeader(
-                header: _Header(index: 2),
+                header: const _Header(index: 2),
                 sliver: const _Sliver(),
                 controller: stickyHeaderController,
               ),
@@ -143,10 +143,10 @@ void main() {
     expect(header02Finder, findsNothing);
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
-    final gesture = await tester.startGesture(Offset(200, 100));
+    final gesture = await tester.startGesture(const Offset(200, 100));
 
     // We scroll just before the Header #1.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -155,7 +155,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll just after the Header #1 so that it is visible.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -164,7 +164,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll in a way that Headers 0 and 1 are side by side.
-    await gesture.moveBy(Offset(0, 640));
+    await gesture.moveBy(const Offset(0, 640));
     await tester.pump();
 
     expect(header00Finder, findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(0));
 
     // We scroll in a way that Header #1 is at the top of the screen.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -182,7 +182,7 @@ void main() {
     expect(stickyHeaderController.stickyHeaderScrollOffset, equals(880));
 
     // We scroll in a way that Header #1 is no longer visible.
-    await gesture.moveBy(Offset(0, 80));
+    await gesture.moveBy(const Offset(0, 80));
     await tester.pump();
 
     expect(header00Finder, findsNothing);
@@ -204,8 +204,8 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Text('Header #$index'),
       height: 80,
+      child: Text('Header #$index'),
     );
   }
 }
@@ -233,6 +233,6 @@ class _SliverItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 40);
+    return const SizedBox(height: 40);
   }
 }

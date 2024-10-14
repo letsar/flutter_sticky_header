@@ -5,7 +5,7 @@ import 'package:value_layout_builder/value_layout_builder.dart';
 
 /// Signature used by [SliverStickyHeader.builder] to build the header
 /// when the sticky header state has changed.
-typedef Widget SliverStickyHeaderWidgetBuilder(
+typedef SliverStickyHeaderWidgetBuilder = Widget Function(
   BuildContext context,
   SliverStickyHeaderState state,
 );
@@ -63,11 +63,11 @@ class DefaultStickyHeaderController extends StatefulWidget {
   }
 
   @override
-  _DefaultStickyHeaderControllerState createState() =>
-      _DefaultStickyHeaderControllerState();
+  DefaultStickyHeaderControllerState createState() =>
+      DefaultStickyHeaderControllerState();
 }
 
-class _DefaultStickyHeaderControllerState
+class DefaultStickyHeaderControllerState
     extends State<DefaultStickyHeaderController> {
   StickyHeaderController? _controller;
 
@@ -148,11 +148,11 @@ class SliverStickyHeader extends RenderObjectWidget {
   ///
   /// If a [StickyHeaderController] is not provided, then the value of
   /// [DefaultStickyHeaderController.of] will be used.
-  SliverStickyHeader({
+  const SliverStickyHeader({
     Key? key,
     this.header,
     this.sliver,
-    this.overlapsContent: false,
+    this.overlapsContent = false,
     this.sticky = true,
     this.controller,
   }) : super(key: key);
@@ -168,7 +168,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     Key? key,
     required SliverStickyHeaderWidgetBuilder builder,
     Widget? sliver,
-    bool overlapsContent: false,
+    bool overlapsContent = false,
     bool sticky = true,
     StickyHeaderController? controller,
   }) : this(
@@ -247,7 +247,7 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
     Key? key,
     required this.builder,
     this.sliver,
-    this.overlapsContent: false,
+    this.overlapsContent = false,
     this.sticky = true,
     this.controller,
   }) : super(key: key);
@@ -339,7 +339,7 @@ class SliverStickyHeaderRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void moveRenderObjectChild(RenderObject child, slot, newSlot) {
+  void moveRenderObjectChild(RenderObject child, oldSlot, newSlot) {
     assert(false);
   }
 

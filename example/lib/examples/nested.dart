@@ -14,17 +14,17 @@ class NestedExample extends StatelessWidget {
       title: 'Nested Sticky Headers',
       slivers: [
         SliverStickyHeader(
-          header: Header(title: '1'),
+          header: const Header(title: '1'),
           sliver: MultiSliver(
             children: [
-              SliverStickyHeader(
+              const SliverStickyHeader(
                 header: Header(title: '1.1'),
                 sliver: _SliverLeaf(),
               ),
               SliverStickyHeader(
-                header: Header(title: '1.2'),
+                header: const Header(title: '1.2'),
                 sliver: MultiSliver(
-                  children: [
+                  children: const [
                     SliverStickyHeader(
                       header: Header(title: '1.2.1'),
                       sliver: _SliverLeaf(),
@@ -40,7 +40,7 @@ class NestedExample extends StatelessWidget {
                   ],
                 ),
               ),
-              SliverStickyHeader(
+              const SliverStickyHeader(
                 header: Header(title: '1.3'),
                 sliver: _SliverLeaf(),
               ),
@@ -48,17 +48,17 @@ class NestedExample extends StatelessWidget {
           ),
         ),
         SliverStickyHeader(
-          header: Header(title: '2'),
+          header: const Header(title: '2'),
           sliver: MultiSliver(
             children: [
-              SliverStickyHeader(
+              const SliverStickyHeader(
                 header: Header(title: '2.1'),
                 sliver: _SliverLeaf(),
               ),
               SliverStickyHeader(
-                header: Header(title: '2.2'),
+                header: const Header(title: '2.2'),
                 sliver: MultiSliver(
-                  children: [
+                  children: const [
                     SliverStickyHeader(
                       header: Header(title: '2.2.1'),
                       sliver: _SliverLeaf(),
@@ -74,21 +74,21 @@ class NestedExample extends StatelessWidget {
                   ],
                 ),
               ),
-              SliverStickyHeader(
+              const SliverStickyHeader(
                 header: Header(title: '2.3'),
                 sliver: _SliverLeaf(),
               ),
             ],
           ),
         ),
-        SliverStickyHeader(
+        const SliverStickyHeader(
           header: Header(title: '3'),
           sliver: _SliverLeaf(),
         ),
         SliverStickyHeader(
-          header: Header(title: '4'),
+          header: const Header(title: '4'),
           sliver: MultiSliver(
-            children: [
+            children: const [
               SliverStickyHeader(
                 header: Header(title: '4.1'),
                 sliver: _SliverLeaf(),

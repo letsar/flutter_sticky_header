@@ -13,8 +13,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderObject? header,
     RenderSliver? child,
-    bool overlapsContent: false,
-    bool sticky: true,
+    bool overlapsContent = false,
+    bool sticky = true,
     StickyHeaderController? controller,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
@@ -79,8 +79,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
   @override
   void setupParentData(RenderObject child) {
-    if (child.parentData is! SliverPhysicalParentData)
+    if (child.parentData is! SliverPhysicalParentData) {
       child.parentData = SliverPhysicalParentData();
+    }
   }
 
   @override
@@ -148,7 +149,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     if (header != null) {
       header!.layout(
         BoxValueConstraints<SliverStickyHeaderState>(
-          value: _oldState ?? SliverStickyHeaderState(0.0, false),
+          value: _oldState ?? const SliverStickyHeaderState(0.0, false),
           constraints: constraints.asBoxConstraints(),
         ),
         parentUsesSize: true,
@@ -318,7 +319,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       final didHitHeader = hitTestBoxChild(
         BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
         header!,
-        mainAxisPosition: mainAxisPosition - childMainAxisPosition(header) - headerPosition,
+        mainAxisPosition:
+            mainAxisPosition - childMainAxisPosition(header) - headerPosition,
         crossAxisPosition: crossAxisPosition,
       );
 
@@ -340,13 +342,15 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
   @override
   double childMainAxisPosition(RenderObject? child) {
-    if (child == header)
+    if (child == header) {
       return _isPinned
           ? 0.0
           : -(constraints.scrollOffset + constraints.overlap);
-    if (child == this.child)
+    }
+    if (child == this.child) {
       return calculatePaintOffset(constraints,
           from: 0.0, to: headerLogicalExtent!);
+    }
     return 0;
   }
 
