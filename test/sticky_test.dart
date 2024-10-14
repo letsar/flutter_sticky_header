@@ -4,12 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 void main() {
-  setUp(() {
-    WidgetsBinding.instance.renderView.configuration =
-        TestViewConfiguration(size: Size(400, 800));
-  });
-
   testWidgets('Mix sticky and not sticky headers', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -89,6 +87,9 @@ void main() {
 
   testWidgets('Mix sticky and not sticky headers - reverse',
       (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -169,6 +170,9 @@ void main() {
   });
 
   testWidgets('Testing multi-depth sticky headers', (tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(

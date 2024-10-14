@@ -3,13 +3,11 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  setUp(() {
-    WidgetsBinding.instance.renderView.configuration =
-        TestViewConfiguration(size: Size(400, 800));
-  });
-
   testWidgets('StickyHeaderController.stickyHeaderScrollOffset',
       (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+
     final StickyHeaderController stickyHeaderController =
         StickyHeaderController();
     final ScrollController scrollController = ScrollController();
@@ -101,6 +99,9 @@ void main() {
 
   testWidgets('StickyHeaderController.stickyHeaderScrollOffset - reverse',
       (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+
     final StickyHeaderController stickyHeaderController =
         StickyHeaderController();
     final ScrollController scrollController = ScrollController();

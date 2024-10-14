@@ -13,8 +13,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderObject? header,
     RenderSliver? child,
-    bool overlapsContent: false,
-    bool sticky: true,
+    bool overlapsContent = false,
+    bool sticky = true,
     StickyHeaderController? controller,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
@@ -318,7 +318,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       final didHitHeader = hitTestBoxChild(
         BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
         header!,
-        mainAxisPosition: mainAxisPosition - childMainAxisPosition(header) - headerPosition,
+        mainAxisPosition:
+            mainAxisPosition - childMainAxisPosition(header) - headerPosition,
         crossAxisPosition: crossAxisPosition,
       );
 

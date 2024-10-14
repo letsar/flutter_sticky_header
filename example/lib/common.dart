@@ -43,7 +43,7 @@ class _FloatingActionButton extends StatelessWidget {
       onPressed: () {
         final double offset =
             DefaultStickyHeaderController.of(context)!.stickyHeaderScrollOffset;
-        PrimaryScrollController.of(context)!.animateTo(
+        PrimaryScrollController.of(context).animateTo(
           offset,
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
