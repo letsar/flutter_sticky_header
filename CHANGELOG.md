@@ -1,3 +1,13 @@
+## 0.10.0
+### Added
+* `onStateChanged` parameter on `SliverStickyHeader` and `SliverStickyHeader.builder`, called after a frame when the `SliverStickyHeaderState` of the header changes (https://github.com/letsar/flutter_sticky_header/pull/120).
+
+### Changed
+* The package no longer depends on the material library, only on the widgets library (https://github.com/letsar/flutter_sticky_header/pull/119).
+
+### Fixed
+* The header now follows its sliver when the viewport is overscrolled at the start, instead of staying at the start of the viewport and leaving a gap above the content (https://github.com/letsar/flutter_sticky_header/pull/121). As a consequence, a header below a pinned `SliverAppBar` now moves away from the app bar during this overscroll, like the content does.
+
 ## 0.9.0
 ### Fixed
 * Hit testing of headers. Taps now reach:
