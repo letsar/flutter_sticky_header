@@ -99,6 +99,36 @@ void main() {
 
       expect(rectOf(tester, 'Header #0'), const Rect.fromLTRB(0, 50, 400, 130));
     });
+
+    testWidgets('header follows its section when overscrolling at the start',
+        (tester) async {
+      final controller = await pumpSections(
+        tester,
+        physics: const BouncingScrollPhysics(),
+      );
+
+      controller.jumpTo(-60);
+      await tester.pump();
+
+      expect(rectOf(tester, 'Header #0'), const Rect.fromLTRB(0, 60, 400, 140));
+      expect(rectOf(tester, 'Item 0.0'), const Rect.fromLTRB(0, 140, 400, 180));
+    });
+
+    testWidgets(
+        'header over the content follows its section when overscrolling at '
+        'the start', (tester) async {
+      final controller = await pumpSections(
+        tester,
+        overlapsContent: true,
+        physics: const BouncingScrollPhysics(),
+      );
+
+      controller.jumpTo(-60);
+      await tester.pump();
+
+      expect(rectOf(tester, 'Header #0'), const Rect.fromLTRB(0, 60, 400, 140));
+      expect(rectOf(tester, 'Item 0.0'), const Rect.fromLTRB(0, 60, 400, 100));
+    });
   });
 
   group('vertical reversed', () {

@@ -182,6 +182,25 @@ void main() {
 
       expect(taps, ['Item 0.0']);
     });
+
+    testWidgets('header when overscrolling at the start', (tester) async {
+      final taps = <String>[];
+      final positions = <Offset>[];
+      final controller = await pumpSections(
+        tester,
+        physics: const BouncingScrollPhysics(),
+        taps: taps,
+        tapPositions: positions,
+      );
+
+      // Header #0 is between 60 and 140.
+      controller.jumpTo(-60);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 100));
+
+      expect(taps, ['Header #0']);
+      expect(positions, [const Offset(200, 40)]);
+    });
   });
 
   group('vertical reversed', () {
