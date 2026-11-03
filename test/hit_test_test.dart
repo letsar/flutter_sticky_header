@@ -250,4 +250,52 @@ void main() {
       expect(taps, ['Header #0', 'Item 0.3']);
     });
   });
+
+  group('local position in the content', () {
+    testWidgets('at rest', (tester) async {
+      final positions = <Offset>[];
+      await pumpSections(tester, tapPositions: positions);
+
+      // Item 0.0 is between 80 and 120.
+      await tester.tapAt(const Offset(200, 100));
+
+      expect(positions, [const Offset(200, 20)]);
+    });
+
+    testWidgets('below a pinned header', (tester) async {
+      final positions = <Offset>[];
+      final controller = await pumpSections(tester, tapPositions: positions);
+
+      // Item 0.3 is between 100 and 140.
+      controller.jumpTo(100);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 110));
+
+      expect(positions, [const Offset(200, 10)]);
+    });
+
+    testWidgets('reversed', (tester) async {
+      final positions = <Offset>[];
+      await pumpSections(tester, reverse: true, tapPositions: positions);
+
+      // Item 0.0 is between 680 and 720.
+      await tester.tapAt(const Offset(200, 690));
+
+      expect(positions, [const Offset(200, 10)]);
+    });
+
+    testWidgets('horizontal', (tester) async {
+      final positions = <Offset>[];
+      await pumpSections(
+        tester,
+        axis: Axis.horizontal,
+        tapPositions: positions,
+      );
+
+      // Item 0.0 is between 80 and 120.
+      await tester.tapAt(const Offset(100, 400));
+
+      expect(positions, [const Offset(20, 400)]);
+    });
+  });
 }
