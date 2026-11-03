@@ -191,8 +191,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   bool _layout() {
     if (header != null) {
       _layoutHeader(_lastHeaderState ?? SliverStickyHeaderState(0.0, false));
-      _headerExtent = computeHeaderExtent();
     }
+    // Also reset when there is no header, which takes no space.
+    _headerExtent = computeHeaderExtent();
 
     // The extent taken by the header in the scroll extent of this sliver.
     final double headerExtent = headerLogicalExtent!;
