@@ -246,22 +246,26 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
     bool headerExtentChanged = false;
     if (header != null) {
+      // The overlap is negative when the viewport is overscrolled at the start.
+      // In this case, the header follows its sliver instead of staying at the
+      // start of the viewport.
+      final double overlap = math.max(0.0, constraints.overlap);
       final double childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
       _headerPosition = sticky
           ? math.min(
-              constraints.overlap,
+              overlap,
               childScrollExtent -
                   constraints.scrollOffset -
                   (overlapsContent ? _headerExtent! : 0.0))
           : -constraints.scrollOffset;
 
       final bool isPinned = sticky &&
-          ((constraints.scrollOffset + constraints.overlap) > 0.0 ||
+          ((constraints.scrollOffset + overlap) > 0.0 ||
               constraints.remainingPaintExtent ==
                   constraints.viewportMainAxisExtent);
 
       final double headerScrollRatio =
-          ((_headerPosition - constraints.overlap).abs() / _headerExtent!);
+          ((_headerPosition - overlap).abs() / _headerExtent!);
       if (isPinned && headerScrollRatio <= 1) {
         controller?.stickyHeaderScrollOffset =
             constraints.precedingScrollExtent;

@@ -34,6 +34,7 @@ Future<ScrollController> pumpSections(
   bool overlapsContent = false,
   bool reverse = false,
   Axis axis = Axis.vertical,
+  ScrollPhysics? physics,
   Widget? leading,
   List<String>? taps,
   List<Offset>? tapPositions,
@@ -95,6 +96,7 @@ Future<ScrollController> pumpSections(
         controller: controller,
         scrollDirection: axis,
         reverse: reverse,
+        physics: physics,
         slivers: <Widget>[
           if (leading != null) leading,
           for (int s = 0; s < 3; s++) section(s),
