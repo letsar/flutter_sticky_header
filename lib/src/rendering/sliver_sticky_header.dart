@@ -9,7 +9,8 @@ import 'package:value_layout_builder/value_layout_builder.dart';
 /// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
 ///
 /// The [header] stays pinned when it hits the start of the viewport until
-/// the [child] scrolls off the viewport.
+/// the [child] scrolls off the viewport. With [stickToEnd], the [header] is
+/// after the [child] and stays pinned at the end of the viewport instead.
 class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderObject? header,
@@ -276,11 +277,11 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
             ? math.max(
                 -constraints.scrollOffset, math.min(position, pinnedPosition))
             : position;
-        // The child must start before the end of the viewport, otherwise this
-        // sliver is not reached yet.
+        // When there is no space left in the viewport, this sliver is not
+        // reached yet.
         isPinned = sticky &&
             position >= pinnedPosition &&
-            -constraints.scrollOffset < constraints.remainingPaintExtent;
+            constraints.remainingPaintExtent > 0.0;
         headerScrollRatio = (_headerPosition - pinnedPosition) / _headerExtent!;
       } else {
         // The overlap is negative when the viewport is overscrolled at the
@@ -363,7 +364,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
           constraints.remainingCacheExtent),
       maxPaintExtent: childLayoutGeometry.maxPaintExtent + headerExtent,
       // The header can be pinned anywhere in the visible part of this sliver.
-      hitTestExtent: paintExtent,
+      hitTestExtent: math.max(paintExtent, childLayoutGeometry.hitTestExtent),
       hasVisualOverflow: childLayoutGeometry.hasVisualOverflow ||
           scrollExtent > constraints.remainingPaintExtent ||
           constraints.scrollOffset > 0.0,
