@@ -44,8 +44,6 @@ class DefaultStickyHeaderController extends StatefulWidget {
 
   /// The widget below this widget in the tree.
   ///
-  /// Typically a [Scaffold] whose [AppBar] includes a [TabBar].
-  ///
   /// {@macro flutter.widgets.child}
   final Widget child;
 
