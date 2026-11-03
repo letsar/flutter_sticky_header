@@ -145,6 +145,8 @@ CustomScrollView(
 
 The same applies to the slivers before the `center` of a `CustomScrollView`, which grow upward. In a list which is not reversed, `stickToEnd: true` creates sticky footers.
 
+Nesting a `SliverStickyHeader` with `stickToEnd: true` inside another one with `stickToEnd: true` is not supported: both headers would be pinned at the same place, the outer one hiding the inner one. Mixing both modes when nesting is supported.
+
 ## onStateChanged
 
 If you want to be notified when the state of a header changes, for example to know which header is pinned, you can use the `onStateChanged` parameter, with both constructors. It is called after the frame, so you can call `setState` from it.

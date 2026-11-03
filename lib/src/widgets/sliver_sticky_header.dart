@@ -231,6 +231,11 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// The [StickyHeaderController] then gives the offset of the sliver whose
   /// header is pinned at the end of the viewport.
   ///
+  /// Nesting a [SliverStickyHeader] with [stickToEnd] inside another one with
+  /// [stickToEnd] is not supported: both headers would be pinned at the same
+  /// place, the outer one hiding the inner one. Nesting it inside a
+  /// [SliverStickyHeader] without [stickToEnd], or the opposite, is supported.
+  ///
   /// Defaults to false.
   final bool stickToEnd;
 
