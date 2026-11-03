@@ -23,8 +23,9 @@ Rect rectOf(WidgetTester tester, String text) {
 ///
 /// Tapping a header or an item adds its text to [taps], and the local
 /// position of the tap to [tapPositions].
-/// When [onHeaderState] is set, headers are built with
-/// [SliverStickyHeader.builder] and report each state they are built with.
+/// When [onHeaderState] or [headerExtentOf] is set, headers are built with
+/// [SliverStickyHeader.builder], report each state they are built with, and
+/// have the extent returned by [headerExtentOf] (80 by default).
 Future<ScrollController> pumpSections(
   WidgetTester tester, {
   bool sticky = true,
@@ -35,6 +36,7 @@ Future<ScrollController> pumpSections(
   List<String>? taps,
   List<Offset>? tapPositions,
   void Function(int section, SliverStickyHeaderState state)? onHeaderState,
+  double Function(SliverStickyHeaderState state)? headerExtentOf,
 }) async {
   tester.view.physicalSize = const Size(400, 800);
   tester.view.devicePixelRatio = 1;
@@ -61,13 +63,13 @@ Future<ScrollController> pumpSections(
         childCount: 20,
       ),
     );
-    if (onHeaderState != null) {
+    if (onHeaderState != null || headerExtentOf != null) {
       return SliverStickyHeader.builder(
         sticky: sticky,
         overlapsContent: overlapsContent,
         builder: (context, state) {
-          onHeaderState(s, state);
-          return box('Header #$s', 80);
+          onHeaderState?.call(s, state);
+          return box('Header #$s', headerExtentOf?.call(state) ?? 80);
         },
         sliver: sliver,
       );
