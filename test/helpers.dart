@@ -26,6 +26,8 @@ Rect rectOf(WidgetTester tester, String text) {
 /// When [onHeaderState] or [headerExtentOf] is set, headers are built with
 /// [SliverStickyHeader.builder], report each state they are built with, and
 /// have the extent returned by [headerExtentOf] (80 by default).
+/// [onStateChanged] is passed to every [SliverStickyHeader] with the index of
+/// its section.
 Future<ScrollController> pumpSections(
   WidgetTester tester, {
   bool sticky = true,
@@ -37,6 +39,7 @@ Future<ScrollController> pumpSections(
   List<Offset>? tapPositions,
   void Function(int section, SliverStickyHeaderState state)? onHeaderState,
   double Function(SliverStickyHeaderState state)? headerExtentOf,
+  void Function(int section, SliverStickyHeaderState state)? onStateChanged,
 }) async {
   tester.view.physicalSize = const Size(400, 800);
   tester.view.devicePixelRatio = 1;
@@ -72,6 +75,8 @@ Future<ScrollController> pumpSections(
           return box('Header #$s', headerExtentOf?.call(state) ?? 80);
         },
         sliver: sliver,
+        onStateChanged:
+            onStateChanged == null ? null : (state) => onStateChanged(s, state),
       );
     }
     return SliverStickyHeader(
@@ -79,6 +84,8 @@ Future<ScrollController> pumpSections(
       overlapsContent: overlapsContent,
       header: box('Header #$s', 80),
       sliver: sliver,
+      onStateChanged:
+          onStateChanged == null ? null : (state) => onStateChanged(s, state),
     );
   }
 
