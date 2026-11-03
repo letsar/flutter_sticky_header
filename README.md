@@ -17,6 +17,29 @@ A Flutter implementation of sticky headers with a sliver as a child.
 * Supports not sticky headers (with `sticky: false` parameter).
 * Supports a controller which notifies the scroll offset of the current sticky header.
 
+## Do you need this package?
+
+Since Flutter 3.13, you can create simple sticky headers with the framework alone: put a pinned header (for example a `PinnedHeaderSliver`, available since Flutter 3.24) and the content in a `SliverMainAxisGroup`. The header stays pinned until the end of its group:
+
+```dart
+CustomScrollView(
+  slivers: [
+    SliverMainAxisGroup(
+      slivers: [
+        PinnedHeaderSliver(child: Header()),
+        SliverList.builder(itemBuilder: ...),
+      ],
+    ),
+  ],
+)
+```
+
+This package is still useful if you need:
+
+* a header that overlaps its content, for example sticky side headers (`overlapsContent`);
+* a header built from its state, whether it is pinned and how much it is scrolled out (`SliverStickyHeader.builder`);
+* the scroll offset of the current sticky header (`StickyHeaderController`).
+
 ## Getting started
 
 In the `pubspec.yaml` of your flutter project, add the following dependency:
