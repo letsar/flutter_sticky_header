@@ -66,7 +66,7 @@ class _AnimatedHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Header(
       index: index,
-      color: Colors.lightBlue.withOpacity(1 - state!.scrollPercentage),
+      color: Colors.lightBlue.withValues(alpha: 1 - state!.scrollPercentage),
     );
   }
 }

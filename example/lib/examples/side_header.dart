@@ -48,7 +48,7 @@ class _StickyHeaderGrid extends StatelessWidget {
                 ),
               ),
               footer: Container(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
