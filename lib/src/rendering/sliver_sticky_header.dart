@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:value_layout_builder/value_layout_builder.dart';
@@ -254,7 +254,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       }
 
       // Second layout if the state changed and the header depends on it.
-      if (header is RenderConstrainedLayoutBuilder<
+      if (header is RenderAbstractLayoutBuilderMixin<
           BoxValueConstraints<SliverStickyHeaderState>, RenderBox>) {
         final SliverStickyHeaderState state = SliverStickyHeaderState(
           headerScrollRatio.clamp(0.0, 1.0),
