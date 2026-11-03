@@ -164,6 +164,22 @@ void main() {
       expect(
           rectOf(tester, 'Header #1'), const Rect.fromLTRB(0, 680, 400, 760));
     });
+
+    testWidgets('header follows its section when overscrolling at the start',
+        (tester) async {
+      final controller = await pumpSections(
+        tester,
+        reverse: true,
+        physics: const BouncingScrollPhysics(),
+      );
+
+      controller.jumpTo(-60);
+      await tester.pump();
+
+      expect(
+          rectOf(tester, 'Header #0'), const Rect.fromLTRB(0, 660, 400, 740));
+      expect(rectOf(tester, 'Item 0.0'), const Rect.fromLTRB(0, 620, 400, 660));
+    });
   });
 
   group('horizontal', () {
