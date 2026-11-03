@@ -17,6 +17,7 @@ A Flutter implementation of sticky headers with a sliver as a child.
 * Supports not sticky headers (with `sticky: false` parameter).
 * Supports a controller which notifies the scroll offset of the current sticky header.
 * Notifies when the state of a header changes (with the `onStateChanged` parameter).
+* Supports headers at the end of their sliver, such as date headers in a reversed chat list or sticky footers (with the `stickToEnd` parameter).
 
 ## Do you need this package?
 
@@ -39,7 +40,8 @@ This package is still useful if you need:
 
 * a header that overlaps its content, for example sticky side headers (`overlapsContent`);
 * a header built from its state, whether it is pinned and how much it is scrolled out (`SliverStickyHeader.builder`), or notified when this state changes (`onStateChanged`);
-* the scroll offset of the current sticky header (`StickyHeaderController`).
+* the scroll offset of the current sticky header (`StickyHeaderController`);
+* a header at the end of its sliver, sticking to the end of the viewport (`stickToEnd`), for example in a reversed list.
 
 ## Getting started
 
@@ -121,6 +123,29 @@ SliverStickyHeader.builder(
   ),
 );
 ```
+
+## stickToEnd
+
+By default, the header is displayed before its sliver and sticks to the start of the viewport. In a reversed list, the start is at the bottom, so the header is displayed at the bottom of its sliver.
+
+With `stickToEnd: true`, the header is displayed after its sliver and sticks to the end of the viewport. In a reversed list, such as a chat, the header is then displayed at the top of its sliver and sticks to the top of the viewport:
+
+```dart
+CustomScrollView(
+  reverse: true,
+  slivers: [
+    SliverStickyHeader(
+      stickToEnd: true,
+      header: DateHeader(),
+      sliver: SliverList(...),
+    ),
+  ],
+);
+```
+
+The same applies to the slivers before the `center` of a `CustomScrollView`, which grow upward. In a list which is not reversed, `stickToEnd: true` creates sticky footers.
+
+Nesting a `SliverStickyHeader` with `stickToEnd: true` inside another one with `stickToEnd: true` is not supported: both headers would be pinned at the same place, the outer one hiding the inner one. Mixing both modes when nesting is supported.
 
 ## onStateChanged
 

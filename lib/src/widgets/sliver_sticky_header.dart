@@ -113,11 +113,21 @@ class SliverStickyHeaderState {
     this.isPinned,
   );
 
-  /// How much the header is pushed out of the viewport by the end of its
-  /// sliver, from 0 (not pushed) to 1 (completely pushed out).
+  /// How much the header is pushed out of the viewport, from 0 (not pushed)
+  /// to 1 (completely pushed out).
+  ///
+  /// By default, the header is pushed out of the start of the viewport by the
+  /// end of its sliver. With [SliverStickyHeader.stickToEnd], it is pushed out
+  /// of the end of the viewport by the start of its sliver, so it goes from 1
+  /// to 0 while its sliver enters the viewport.
   final double scrollPercentage;
 
-  /// Whether the header is pinned at the start of the viewport.
+  /// Whether the header is pinned at the start of the viewport, or at the end
+  /// with [SliverStickyHeader.stickToEnd].
+  ///
+  /// It is true while the header is pushed out, and false when its sliver is
+  /// not visible yet. With [SliverStickyHeader.stickToEnd], a sliver which is
+  /// not visible yet has a [scrollPercentage] of 1.
   final bool isPinned;
 
   @override
@@ -135,7 +145,8 @@ class SliverStickyHeaderState {
   }
 }
 
-/// A sliver that displays a header before its sliver.
+/// A sliver that displays a header before its sliver, or after it with
+/// [stickToEnd].
 /// The header scrolls off the viewport only when the sliver does.
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
@@ -144,6 +155,9 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// [overlapsContent] it's true.
   /// The [header] stays pinned when it hits the start of the viewport until
   /// the [sliver] scrolls off the viewport.
+  ///
+  /// With [stickToEnd], the [header] is displayed after its [sliver] and
+  /// stays pinned at the end of the viewport instead.
   ///
   /// The [overlapsContent] and [sticky] arguments must not be null.
   ///
@@ -155,6 +169,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.sliver,
     this.overlapsContent = false,
     this.sticky = true,
+    this.stickToEnd = false,
     this.controller,
     this.onStateChanged,
   }) : super(key: key);
@@ -172,6 +187,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     Widget? sliver,
     bool overlapsContent = false,
     bool sticky = true,
+    bool stickToEnd = false,
     StickyHeaderController? controller,
     ValueChanged<SliverStickyHeaderState>? onStateChanged,
   }) : this(
@@ -183,14 +199,15 @@ class SliverStickyHeader extends RenderObjectWidget {
           sliver: sliver,
           overlapsContent: overlapsContent,
           sticky: sticky,
+          stickToEnd: stickToEnd,
           controller: controller,
           onStateChanged: onStateChanged,
         );
 
-  /// The header to display before the sliver.
+  /// The header to display before the sliver, or after it with [stickToEnd].
   final Widget? header;
 
-  /// The sliver to display after the header.
+  /// The sliver to display after the header, or before it with [stickToEnd].
   final Widget? sliver;
 
   /// Whether the header should be drawn on top of the sliver
@@ -200,6 +217,27 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// Whether to stick the header.
   /// Defaults to true.
   final bool sticky;
+
+  /// Whether the header is displayed after the [sliver] and sticks to the end
+  /// of the viewport, instead of the start.
+  ///
+  /// The end is in the direction in which the slivers grow. For example, in a
+  /// reversed vertical list, the header is displayed at the top of the
+  /// [sliver] and sticks to the top of the viewport. In a vertical list, the
+  /// header is a sticky footer. The slivers before the center of a
+  /// [CustomScrollView] grow in the reverse direction, so in a vertical list
+  /// which is not reversed, their header is displayed at their top.
+  ///
+  /// The [StickyHeaderController] then gives the offset of the sliver whose
+  /// header is pinned at the end of the viewport.
+  ///
+  /// Nesting a [SliverStickyHeader] with [stickToEnd] inside another one with
+  /// [stickToEnd] is not supported: both headers would be pinned at the same
+  /// place, the outer one hiding the inner one. Nesting it inside a
+  /// [SliverStickyHeader] without [stickToEnd], or the opposite, is supported.
+  ///
+  /// Defaults to false.
+  final bool stickToEnd;
 
   /// The controller used to interact with this sliver.
   ///
@@ -222,6 +260,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     return RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
       sticky: sticky,
+      stickToEnd: stickToEnd,
       controller: controller ?? DefaultStickyHeaderController.of(context),
       onStateChanged: onStateChanged,
     );
@@ -239,6 +278,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
+      ..stickToEnd = stickToEnd
       ..controller = controller ?? DefaultStickyHeaderController.of(context)
       ..onStateChanged = onStateChanged;
   }

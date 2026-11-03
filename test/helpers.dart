@@ -32,6 +32,7 @@ Future<ScrollController> pumpSections(
   WidgetTester tester, {
   bool sticky = true,
   bool overlapsContent = false,
+  bool stickToEnd = false,
   bool reverse = false,
   Axis axis = Axis.vertical,
   ScrollPhysics? physics,
@@ -41,6 +42,7 @@ Future<ScrollController> pumpSections(
   void Function(int section, SliverStickyHeaderState state)? onHeaderState,
   double Function(SliverStickyHeaderState state)? headerExtentOf,
   void Function(int section, SliverStickyHeaderState state)? onStateChanged,
+  StickyHeaderController? stickyHeaderController,
 }) async {
   tester.view.physicalSize = const Size(400, 800);
   tester.view.devicePixelRatio = 1;
@@ -71,6 +73,8 @@ Future<ScrollController> pumpSections(
       return SliverStickyHeader.builder(
         sticky: sticky,
         overlapsContent: overlapsContent,
+        stickToEnd: stickToEnd,
+        controller: stickyHeaderController,
         builder: (context, state) {
           onHeaderState?.call(s, state);
           return box('Header #$s', headerExtentOf?.call(state) ?? 80);
@@ -83,6 +87,8 @@ Future<ScrollController> pumpSections(
     return SliverStickyHeader(
       sticky: sticky,
       overlapsContent: overlapsContent,
+      stickToEnd: stickToEnd,
+      controller: stickyHeaderController,
       header: box('Header #$s', 80),
       sliver: sliver,
       onStateChanged:

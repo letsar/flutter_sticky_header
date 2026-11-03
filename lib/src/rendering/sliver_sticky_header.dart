@@ -9,17 +9,20 @@ import 'package:value_layout_builder/value_layout_builder.dart';
 /// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
 ///
 /// The [header] stays pinned when it hits the start of the viewport until
-/// the [child] scrolls off the viewport.
+/// the [child] scrolls off the viewport. With [stickToEnd], the [header] is
+/// after the [child] and stays pinned at the end of the viewport instead.
 class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderObject? header,
     RenderSliver? child,
     bool overlapsContent = false,
     bool sticky = true,
+    bool stickToEnd = false,
     StickyHeaderController? controller,
     this.onStateChanged,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
+        _stickToEnd = stickToEnd,
         _controller = controller {
     this.header = header as RenderBox?;
     this.child = child;
@@ -51,6 +54,17 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   set sticky(bool value) {
     if (_sticky == value) return;
     _sticky = value;
+    markNeedsLayout();
+  }
+
+  /// Whether the header is after the child and sticks to the end of the
+  /// viewport, instead of the start.
+  bool get stickToEnd => _stickToEnd;
+  bool _stickToEnd;
+
+  set stickToEnd(bool value) {
+    if (_stickToEnd == value) return;
+    _stickToEnd = value;
     markNeedsLayout();
   }
 
@@ -187,7 +201,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     final double headerCacheExtent =
         calculateCacheOffset(constraints, from: 0.0, to: headerExtent);
 
-    if (child == null) {
+    if (child != null && stickToEnd) {
+      if (!_layoutChildBeforeHeader(headerExtent)) return true;
+    } else if (child == null) {
       geometry = SliverGeometry(
           scrollExtent: headerExtent,
           maxPaintExtent: headerExtent,
@@ -246,26 +262,48 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
     bool headerExtentChanged = false;
     if (header != null) {
-      // The overlap is negative when the viewport is overscrolled at the start.
-      // In this case, the header follows its sliver instead of staying at the
-      // start of the viewport.
-      final double overlap = math.max(0.0, constraints.overlap);
       final double childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
-      _headerPosition = sticky
-          ? math.min(
-              overlap,
-              childScrollExtent -
-                  constraints.scrollOffset -
-                  (overlapsContent ? _headerExtent! : 0.0))
-          : -constraints.scrollOffset;
+      final bool isPinned;
+      final double headerScrollRatio;
+      if (stickToEnd) {
+        // The position of the header after the child, if it was not sticky.
+        final double position = childScrollExtent -
+            constraints.scrollOffset -
+            (overlapsContent ? _headerExtent! : 0.0);
+        final double pinnedPosition =
+            constraints.remainingPaintExtent - _headerExtent!;
+        // The header is pushed out of the viewport by the start of the child.
+        _headerPosition = sticky
+            ? math.max(
+                -constraints.scrollOffset, math.min(position, pinnedPosition))
+            : position;
+        // When there is no space left in the viewport, this sliver is not
+        // reached yet.
+        isPinned = sticky &&
+            position >= pinnedPosition &&
+            constraints.remainingPaintExtent > 0.0;
+        headerScrollRatio = (_headerPosition - pinnedPosition) / _headerExtent!;
+      } else {
+        // The overlap is negative when the viewport is overscrolled at the
+        // start. In this case, the header follows its sliver instead of
+        // staying at the start of the viewport.
+        final double overlap = math.max(0.0, constraints.overlap);
+        _headerPosition = sticky
+            ? math.min(
+                overlap,
+                childScrollExtent -
+                    constraints.scrollOffset -
+                    (overlapsContent ? _headerExtent! : 0.0))
+            : -constraints.scrollOffset;
 
-      final bool isPinned = sticky &&
-          ((constraints.scrollOffset + overlap) > 0.0 ||
-              constraints.remainingPaintExtent ==
-                  constraints.viewportMainAxisExtent);
+        isPinned = sticky &&
+            ((constraints.scrollOffset + overlap) > 0.0 ||
+                constraints.remainingPaintExtent ==
+                    constraints.viewportMainAxisExtent);
 
-      final double headerScrollRatio =
-          ((_headerPosition - overlap).abs() / _headerExtent!);
+        headerScrollRatio =
+            ((_headerPosition - overlap).abs() / _headerExtent!);
+      }
       if (isPinned && headerScrollRatio <= 1) {
         controller?.stickyHeaderScrollOffset =
             constraints.precedingScrollExtent;
@@ -288,6 +326,52 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       _setChildPaintOffset(header!, childMainAxisPosition(header));
     }
     return !headerExtentChanged;
+  }
+
+  /// Lays out the child before a header of [headerExtent] in the scroll extent
+  /// of this sliver, when it sticks to the end.
+  ///
+  /// Returns false if the child asked for a scroll offset correction.
+  bool _layoutChildBeforeHeader(double headerExtent) {
+    child!.layout(constraints, parentUsesSize: true);
+    final SliverGeometry childLayoutGeometry = child!.geometry!;
+    if (childLayoutGeometry.scrollOffsetCorrection != null) {
+      geometry = SliverGeometry(
+        scrollOffsetCorrection: childLayoutGeometry.scrollOffsetCorrection,
+      );
+      return false;
+    }
+
+    final double childScrollExtent = childLayoutGeometry.scrollExtent;
+    final double scrollExtent = childScrollExtent + headerExtent;
+    final double headerPaintExtent = calculatePaintOffset(constraints,
+        from: childScrollExtent, to: scrollExtent);
+    final double headerCacheExtent = calculateCacheOffset(constraints,
+        from: childScrollExtent, to: scrollExtent);
+    final double paintExtent = math.min(
+      math.max(childLayoutGeometry.paintExtent,
+              childLayoutGeometry.layoutExtent) +
+          headerPaintExtent,
+      constraints.remainingPaintExtent,
+    );
+
+    geometry = SliverGeometry(
+      scrollExtent: scrollExtent,
+      paintExtent: paintExtent,
+      layoutExtent: math.min(
+          childLayoutGeometry.layoutExtent + headerPaintExtent, paintExtent),
+      cacheExtent: math.min(childLayoutGeometry.cacheExtent + headerCacheExtent,
+          constraints.remainingCacheExtent),
+      maxPaintExtent: childLayoutGeometry.maxPaintExtent + headerExtent,
+      // The header can be pinned anywhere in the visible part of this sliver.
+      hitTestExtent: math.max(paintExtent, childLayoutGeometry.hitTestExtent),
+      hasVisualOverflow: childLayoutGeometry.hasVisualOverflow ||
+          scrollExtent > constraints.remainingPaintExtent ||
+          constraints.scrollOffset > 0.0,
+    );
+
+    _setChildPaintOffset(child!, childMainAxisPosition(child));
+    return true;
   }
 
   /// Reports [state] to [onStateChanged] after the current frame.
@@ -393,9 +477,12 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   @override
   double childMainAxisPosition(RenderObject? child) {
     if (child == header) return _headerPosition;
-    if (child == this.child)
-      return calculatePaintOffset(constraints,
-          from: 0.0, to: headerLogicalExtent!);
+    if (child == this.child) {
+      return stickToEnd
+          ? 0.0
+          : calculatePaintOffset(constraints,
+              from: 0.0, to: headerLogicalExtent!);
+    }
     return 0;
   }
 
@@ -403,7 +490,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   double? childScrollOffset(RenderObject child) {
     assert(child.parent == this);
     if (child == this.child) {
-      return headerLogicalExtent;
+      return stickToEnd ? 0.0 : headerLogicalExtent;
+    } else if (child == header && stickToEnd) {
+      return (this.child?.geometry?.scrollExtent ?? 0.0) -
+          (overlapsContent ? _headerExtent! : 0.0);
     } else {
       return super.childScrollOffset(child);
     }
