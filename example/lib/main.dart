@@ -1,18 +1,22 @@
+import 'package:example/examples/nested.dart';
 import 'package:flutter/material.dart';
 
-import 'examples/list.dart';
-import 'examples/grid.dart';
-import 'examples/not_sticky.dart';
-import 'examples/side_header.dart';
 import 'examples/animated_header.dart';
-import 'examples/reverse.dart';
+import 'examples/grid.dart';
+import 'examples/list.dart';
 import 'examples/mix_slivers.dart';
+import 'examples/not_sticky.dart';
+import 'examples/reverse.dart';
+import 'examples/side_header.dart';
 
-void main() => runApp(const App());
+void main() {
+  // debugPaintPointersEnabled = true;
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -26,7 +30,7 @@ class App extends StatelessWidget {
 
 class _Home extends StatelessWidget {
   const _Home({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -65,6 +69,10 @@ class _Home extends StatelessWidget {
             text: 'Mixing other slivers',
             builder: (_) => const MixSliversExample(),
           ),
+          _Item(
+            text: 'Nested sticky headers',
+            builder: (_) => const NestedExample(),
+          ),
         ],
       ),
     );
@@ -73,9 +81,9 @@ class _Home extends StatelessWidget {
 
 class _Item extends StatelessWidget {
   const _Item({
-    Key key,
-    @required this.text,
-    @required this.builder,
+    Key? key,
+    required this.text,
+    required this.builder,
   }) : super(key: key);
 
   final String text;

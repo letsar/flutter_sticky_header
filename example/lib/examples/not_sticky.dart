@@ -5,7 +5,7 @@ import '../common.dart';
 
 class NotStickyExample extends StatelessWidget {
   const NotStickyExample({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -24,11 +24,11 @@ class NotStickyExample extends StatelessWidget {
 
 class _NotStickyList extends StatelessWidget {
   const _NotStickyList({
-    Key key,
+    Key? key,
     this.index,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,9 @@ class _NotStickyList extends StatelessWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, i) => ListTile(
+            onTap: () {
+              print('tile $i');
+            },
             leading: CircleAvatar(
               child: Text('$index'),
             ),

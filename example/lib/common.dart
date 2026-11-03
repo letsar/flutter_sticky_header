@@ -3,9 +3,9 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
-    Key key,
-    @required this.title,
-    @required this.slivers,
+    Key? key,
+    required this.title,
+    required this.slivers,
     this.reverse = false,
   }) : super(key: key);
 
@@ -32,7 +32,7 @@ class AppScaffold extends StatelessWidget {
 
 class _FloatingActionButton extends StatelessWidget {
   const _FloatingActionButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _FloatingActionButton extends StatelessWidget {
       backgroundColor: Colors.green,
       onPressed: () {
         final double offset =
-            DefaultStickyHeaderController.of(context).stickyHeaderScrollOffset;
+            DefaultStickyHeaderController.of(context)!.stickyHeaderScrollOffset;
         PrimaryScrollController.of(context).animateTo(
           offset,
           duration: Duration(milliseconds: 300),
@@ -55,26 +55,31 @@ class _FloatingActionButton extends StatelessWidget {
 
 class Header extends StatelessWidget {
   const Header({
-    Key key,
+    Key? key,
     this.index,
     this.title,
     this.color = Colors.lightBlue,
   }) : super(key: key);
 
-  final String title;
-  final int index;
+  final String? title;
+  final int? index;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      color: color,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title ?? 'Header #$index',
-        style: const TextStyle(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        print('hit $index');
+      },
+      child: Container(
+        height: 60,
+        color: color,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title ?? 'Header #$index',
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

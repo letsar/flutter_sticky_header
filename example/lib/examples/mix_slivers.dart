@@ -5,7 +5,7 @@ import '../common.dart';
 
 class MixSliversExample extends StatelessWidget {
   const MixSliversExample({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -36,11 +36,11 @@ class MixSliversExample extends StatelessWidget {
 
 class _StickyHeaderList extends StatelessWidget {
   const _StickyHeaderList({
-    Key key,
+    Key? key,
     this.index,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {

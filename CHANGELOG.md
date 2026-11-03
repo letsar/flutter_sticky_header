@@ -1,3 +1,43 @@
+## 0.8.0
+### Changed
+* Update Flutter constraints.
+* Update version of value_layout_builder.
+  
+### Fixed
+* Flutter 3.32 breaking changes issue.
+
+## 0.7.0
+### Changed
+* Update Flutter and Dart SDK constraints.
+* Update usage of hashValues (https://github.com/letsar/flutter_sticky_header/pull/100)
+* Update version of value_layout_builder.
+
+## 0.6.5
+### Fixed
+* Tap offset when overlaps is > 0.
+
+## 0.6.4
+### Fixed
+* Not passing right overlap contraints to sliver child. Now we can create nested sticky headers!
+
+## 0.6.3
+### Fixed
+* Hit Test on not sticky header
+
+## 0.6.2
+### Fixed
+* Hit Test on not sticky header
+
+## 0.6.1
+### Fixed
+* Error due to null-safety migration.
+
+## 0.6.0
+### Changed
+* Migrated to sound null-safety.
+* Increase the minimum version of Flutter.
+* Increase the minimum version of Dart SDK.
+
 ## 0.5.0
 ### Changed
 * The minimum version of Flutter.
