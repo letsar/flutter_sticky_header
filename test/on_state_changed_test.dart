@@ -110,28 +110,4 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(rebuilds, 2);
   });
-
-  testWidgets('reports the current state to a callback set later',
-      (tester) async {
-    final reported = <SliverStickyHeaderState>[];
-    Widget build(ValueChanged<SliverStickyHeaderState>? onStateChanged) {
-      return Directionality(
-        textDirection: TextDirection.ltr,
-        child: CustomScrollView(
-          slivers: [
-            SliverStickyHeader(
-              header: const SizedBox(height: 80),
-              sliver: const SliverToBoxAdapter(child: SizedBox(height: 1000)),
-              onStateChanged: onStateChanged,
-            ),
-          ],
-        ),
-      );
-    }
-
-    await tester.pumpWidget(build(null));
-    await tester.pumpWidget(build(reported.add));
-
-    expect(reported, [const SliverStickyHeaderState(0, true)]);
-  });
 }

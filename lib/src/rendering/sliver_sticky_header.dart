@@ -17,11 +17,10 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     bool overlapsContent = false,
     bool sticky = true,
     StickyHeaderController? controller,
-    ValueChanged<SliverStickyHeaderState>? onStateChanged,
+    this.onStateChanged,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
-        _controller = controller,
-        _onStateChanged = onStateChanged {
+        _controller = controller {
     this.header = header as RenderBox?;
     this.child = child;
   }
@@ -68,24 +67,16 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   }
 
   /// Called after a frame when the state of the header changed.
-  ValueChanged<SliverStickyHeaderState>? get onStateChanged => _onStateChanged;
-  ValueChanged<SliverStickyHeaderState>? _onStateChanged;
-
-  set onStateChanged(ValueChanged<SliverStickyHeaderState>? value) {
-    if (_onStateChanged == value) return;
-    if (_onStateChanged == null) {
-      // Report the current state to the new callback.
-      _reportedState = null;
-      markNeedsLayout();
-    }
-    _onStateChanged = value;
-  }
+  ValueChanged<SliverStickyHeaderState>? onStateChanged;
 
   /// The last state passed to [onStateChanged].
   SliverStickyHeaderState? _reportedState;
 
   /// The state to pass to [onStateChanged] after the current frame.
   SliverStickyHeaderState? _stateToReport;
+
+  /// Whether [onStateChanged] will be called after the current frame.
+  bool _stateReportScheduled = false;
 
   /// The render object's header
   RenderBox? get header => _header;
@@ -302,13 +293,13 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   /// several times per frame.
   void _scheduleStateReport(SliverStickyHeaderState state) {
     if (onStateChanged == null) return;
-    final bool scheduled = _stateToReport != null;
     _stateToReport = state;
-    if (scheduled) return;
+    if (_stateReportScheduled) return;
+    _stateReportScheduled = true;
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final SliverStickyHeaderState? state = _stateToReport;
-      _stateToReport = null;
-      if (state == null || state == _reportedState || !attached) return;
+      _stateReportScheduled = false;
+      final SliverStickyHeaderState state = _stateToReport!;
+      if (state == _reportedState || !attached) return;
       _reportedState = state;
       onStateChanged?.call(state);
     });

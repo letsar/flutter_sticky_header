@@ -208,7 +208,10 @@ class SliverStickyHeader extends RenderObjectWidget {
   final StickyHeaderController? controller;
 
   /// Called after a frame when the [SliverStickyHeaderState] of the header
-  /// changed, including the first time the header is laid out.
+  /// changed.
+  ///
+  /// When it is set from the start, it is also called after the first layout
+  /// of the header with its initial state.
   ///
   /// While the header is pushed out of the viewport by the end of its sliver,
   /// its scroll percentage changes, so this is called on every frame.
