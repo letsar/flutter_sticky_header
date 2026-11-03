@@ -113,8 +113,11 @@ class SliverStickyHeaderState {
     this.isPinned,
   );
 
+  /// How much the header is pushed out of the viewport by the end of its
+  /// sliver, from 0 (not pushed) to 1 (completely pushed out).
   final double scrollPercentage;
 
+  /// Whether the header is pinned at the start of the viewport.
   final bool isPinned;
 
   @override
@@ -153,6 +156,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.overlapsContent = false,
     this.sticky = true,
     this.controller,
+    this.onStateChanged,
   }) : super(key: key);
 
   /// Creates a widget that builds the header of a [SliverStickyHeader]
@@ -169,6 +173,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     bool overlapsContent = false,
     bool sticky = true,
     StickyHeaderController? controller,
+    ValueChanged<SliverStickyHeaderState>? onStateChanged,
   }) : this(
           key: key,
           header: ValueLayoutBuilder<SliverStickyHeaderState>(
@@ -179,6 +184,7 @@ class SliverStickyHeader extends RenderObjectWidget {
           overlapsContent: overlapsContent,
           sticky: sticky,
           controller: controller,
+          onStateChanged: onStateChanged,
         );
 
   /// The header to display before the sliver.
@@ -201,12 +207,23 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// will be used.
   final StickyHeaderController? controller;
 
+  /// Called after a frame when the [SliverStickyHeaderState] of the header
+  /// changed.
+  ///
+  /// When it is set from the start, it is also called after the first layout
+  /// of the header with its initial state.
+  ///
+  /// While the header is pushed out of the viewport by the end of its sliver,
+  /// its scroll percentage changes, so this is called on every frame.
+  final ValueChanged<SliverStickyHeaderState>? onStateChanged;
+
   @override
   RenderSliverStickyHeader createRenderObject(BuildContext context) {
     return RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
       sticky: sticky,
       controller: controller ?? DefaultStickyHeaderController.of(context),
+      onStateChanged: onStateChanged,
     );
   }
 
@@ -222,7 +239,8 @@ class SliverStickyHeader extends RenderObjectWidget {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
-      ..controller = controller ?? DefaultStickyHeaderController.of(context);
+      ..controller = controller ?? DefaultStickyHeaderController.of(context)
+      ..onStateChanged = onStateChanged;
   }
 }
 

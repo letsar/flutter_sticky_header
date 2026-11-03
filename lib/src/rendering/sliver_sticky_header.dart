@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:value_layout_builder/value_layout_builder.dart';
 
@@ -16,6 +17,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     bool overlapsContent = false,
     bool sticky = true,
     StickyHeaderController? controller,
+    this.onStateChanged,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
         _controller = controller {
@@ -63,6 +65,18 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     }
     _controller = value;
   }
+
+  /// Called after a frame when the state of the header changed.
+  ValueChanged<SliverStickyHeaderState>? onStateChanged;
+
+  /// The last state passed to [onStateChanged].
+  SliverStickyHeaderState? _reportedState;
+
+  /// The state to pass to [onStateChanged] after the current frame.
+  SliverStickyHeaderState? _stateToReport;
+
+  /// Whether [onStateChanged] will be called after the current frame.
+  bool _stateReportScheduled = false;
 
   /// The render object's header
   RenderBox? get header => _header;
@@ -253,22 +267,42 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
             constraints.precedingScrollExtent;
       }
 
+      final SliverStickyHeaderState state = SliverStickyHeaderState(
+        headerScrollRatio.clamp(0.0, 1.0),
+        isPinned,
+      );
+
       // Second layout if the state changed and the header depends on it.
       if (header is RenderAbstractLayoutBuilderMixin<
-          BoxValueConstraints<SliverStickyHeaderState>, RenderBox>) {
-        final SliverStickyHeaderState state = SliverStickyHeaderState(
-          headerScrollRatio.clamp(0.0, 1.0),
-          isPinned,
-        );
-        if (_lastHeaderState != state) {
-          _layoutHeader(state);
-          headerExtentChanged = computeHeaderExtent() != _headerExtent;
-        }
+              BoxValueConstraints<SliverStickyHeaderState>, RenderBox> &&
+          _lastHeaderState != state) {
+        _layoutHeader(state);
+        headerExtentChanged = computeHeaderExtent() != _headerExtent;
       }
 
+      _scheduleStateReport(state);
       _setChildPaintOffset(header!, childMainAxisPosition(header));
     }
     return !headerExtentChanged;
+  }
+
+  /// Reports [state] to [onStateChanged] after the current frame.
+  ///
+  /// It is not called during layout, so that it can rebuild widgets, and only
+  /// with the last state of the frame, since this sliver can be laid out
+  /// several times per frame.
+  void _scheduleStateReport(SliverStickyHeaderState state) {
+    if (onStateChanged == null) return;
+    _stateToReport = state;
+    if (_stateReportScheduled) return;
+    _stateReportScheduled = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _stateReportScheduled = false;
+      final SliverStickyHeaderState state = _stateToReport!;
+      if (state == _reportedState || !attached) return;
+      _reportedState = state;
+      onStateChanged?.call(state);
+    });
   }
 
   void _layoutHeader(SliverStickyHeaderState state) {

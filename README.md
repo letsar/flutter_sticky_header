@@ -16,6 +16,7 @@ A Flutter implementation of sticky headers with a sliver as a child.
 * Supports overlapping (AppBars for example).
 * Supports not sticky headers (with `sticky: false` parameter).
 * Supports a controller which notifies the scroll offset of the current sticky header.
+* Notifies when the state of a header changes (with the `onStateChanged` parameter).
 
 ## Do you need this package?
 
@@ -37,7 +38,7 @@ CustomScrollView(
 This package is still useful if you need:
 
 * a header that overlaps its content, for example sticky side headers (`overlapsContent`);
-* a header built from its state, whether it is pinned and how much it is scrolled out (`SliverStickyHeader.builder`);
+* a header built from its state, whether it is pinned and how much it is scrolled out (`SliverStickyHeader.builder`), or notified when this state changes (`onStateChanged`);
 * the scroll offset of the current sticky header (`StickyHeaderController`).
 
 ## Getting started
@@ -120,6 +121,24 @@ SliverStickyHeader.builder(
   ),
 );
 ```
+
+## onStateChanged
+
+If you want to be notified when the state of a header changes, for example to know which header is pinned, you can use the `onStateChanged` parameter, with both constructors. It is called after the frame, so you can call `setState` from it.
+
+```dart
+SliverStickyHeader(
+  header: Header(),
+  sliver: SliverList(...),
+  onStateChanged: (state) {
+    if (state.isPinned && state.scrollPercentage < 1) {
+      setState(() => currentSection = index);
+    }
+  },
+);
+```
+
+While a header is pushed out of the viewport by the end of its sliver, its scroll percentage changes, so `onStateChanged` is called on every frame.
 
 You can find more examples in the [Example](https://github.com/letsar/flutter_sticky_header/tree/master/example) project.
 
