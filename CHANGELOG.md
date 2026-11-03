@@ -1,3 +1,10 @@
+## 0.11.0
+### Added
+* `stickToEnd` parameter on `SliverStickyHeader` and `SliverStickyHeader.builder`. The header is displayed after its sliver and sticks to the end of the viewport: at the top in a reversed list (e.g. a chat) or for the slivers before the `center` of a `CustomScrollView`, and as a sticky footer in a list which is not reversed (https://github.com/letsar/flutter_sticky_header/pull/123).
+
+### Fixed
+* A `SliverStickyHeader` without header no longer throws during layout, and its content is no longer shifted when its header is removed (https://github.com/letsar/flutter_sticky_header/pull/124).
+
 ## 0.10.0
 ### Added
 * `onStateChanged` parameter on `SliverStickyHeader` and `SliverStickyHeader.builder`, called after a frame when the `SliverStickyHeaderState` of the header changes (https://github.com/letsar/flutter_sticky_header/pull/120).
