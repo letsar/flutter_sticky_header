@@ -325,9 +325,15 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       {required double mainAxisPosition, required double crossAxisPosition}) {
     return child != null &&
         child!.geometry!.hitTestExtent > 0.0 &&
-        child!.hitTest(result,
-            mainAxisPosition: mainAxisPosition - childMainAxisPosition(child),
-            crossAxisPosition: crossAxisPosition);
+        result.addWithAxisOffset(
+          paintOffset:
+              (child!.parentData as SliverPhysicalParentData).paintOffset,
+          mainAxisOffset: childMainAxisPosition(child),
+          crossAxisOffset: 0.0,
+          mainAxisPosition: mainAxisPosition,
+          crossAxisPosition: crossAxisPosition,
+          hitTest: child!.hitTest,
+        );
   }
 
   @override
