@@ -302,7 +302,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     assert(geometry!.hitTestExtent > 0.0);
     if (header != null &&
         mainAxisPosition >= _headerPosition &&
-        mainAxisPosition - _headerPosition <= _headerExtent!) {
+        mainAxisPosition - _headerPosition < _headerExtent!) {
       final didHitHeader = hitTestBoxChild(
         BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
         header!,
