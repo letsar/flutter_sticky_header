@@ -182,4 +182,19 @@ void main() {
     // Header #1.
     expect(controller.offset, 880 + 2 * 40);
   });
+
+  testWidgets(
+      'Scrollable.ensureVisible scrolls to an item when the header overlaps '
+      'the content', (tester) async {
+    final controller = await pumpSections(tester, overlapsContent: true);
+
+    Scrollable.ensureVisible(
+      tester.element(find.text('Item 1.2', skipOffstage: false)),
+    );
+    await tester.pump();
+
+    // Section #1 starts at 800 and its content starts with it.
+    expect(controller.offset, 800 + 2 * 40);
+    expect(rectOf(tester, 'Item 1.2'), const Rect.fromLTRB(0, 0, 400, 40));
+  });
 }
