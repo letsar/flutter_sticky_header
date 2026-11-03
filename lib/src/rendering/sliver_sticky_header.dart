@@ -148,6 +148,19 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       return;
     }
 
+    if (!_layout()) {
+      // The header changed its extent when it was laid out with its new state.
+      // Lay out everything again with this state, only once to not loop if
+      // the state keeps changing with the extent.
+      _layout();
+    }
+  }
+
+  /// Lays out the header and the child.
+  ///
+  /// Returns false if the header extent changed when it was laid out a second
+  /// time with its new state, so that the geometry is outdated.
+  bool _layout() {
     if (header != null) {
       _layoutHeader(_lastHeaderState ?? SliverStickyHeaderState(0.0, false));
       _headerExtent = computeHeaderExtent();
@@ -188,7 +201,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         geometry = SliverGeometry(
           scrollOffsetCorrection: childLayoutGeometry.scrollOffsetCorrection,
         );
-        return;
+        return true;
       }
 
       final double paintExtent = math.min(
@@ -217,6 +230,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       _setChildPaintOffset(child!, childMainAxisPosition(child));
     }
 
+    bool headerExtentChanged = false;
     if (header != null) {
       final double childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
       _headerPosition = sticky
@@ -248,11 +262,13 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         );
         if (_lastHeaderState != state) {
           _layoutHeader(state);
+          headerExtentChanged = computeHeaderExtent() != _headerExtent;
         }
       }
 
       _setChildPaintOffset(header!, childMainAxisPosition(header));
     }
+    return !headerExtentChanged;
   }
 
   void _layoutHeader(SliverStickyHeaderState state) {

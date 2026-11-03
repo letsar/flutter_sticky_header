@@ -6,6 +6,7 @@ import 'examples/grid.dart';
 import 'examples/list.dart';
 import 'examples/mix_slivers.dart';
 import 'examples/not_sticky.dart';
+import 'examples/resizing_header.dart';
 import 'examples/reverse.dart';
 import 'examples/side_header.dart';
 
@@ -60,6 +61,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Animated Header Example',
             builder: (_) => const AnimatedHeaderExample(),
+          ),
+          _Item(
+            text: 'Resizing Header Example',
+            builder: (_) => const ResizingHeaderExample(),
           ),
           _Item(
             text: 'Reverse List Example',
