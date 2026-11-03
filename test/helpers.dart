@@ -21,7 +21,8 @@ Rect rectOf(WidgetTester tester, String text) {
 /// Pumps a [CustomScrollView] with 3 sections named 'Header #s' and
 /// 'Item s.i'.
 ///
-/// Tapping a header or an item adds its text to [taps].
+/// Tapping a header or an item adds its text to [taps], and the local
+/// position of the tap to [tapPositions].
 /// When [onHeaderState] is set, headers are built with
 /// [SliverStickyHeader.builder] and report each state they are built with.
 Future<ScrollController> pumpSections(
@@ -32,6 +33,7 @@ Future<ScrollController> pumpSections(
   Axis axis = Axis.vertical,
   Widget? leading,
   List<String>? taps,
+  List<Offset>? tapPositions,
   void Function(int section, SliverStickyHeaderState state)? onHeaderState,
 }) async {
   tester.view.physicalSize = const Size(400, 800);
@@ -43,6 +45,7 @@ Future<ScrollController> pumpSections(
 
   final bool vertical = axis == Axis.vertical;
   Widget box(String text, double extent) => GestureDetector(
+        onTapDown: (details) => tapPositions?.add(details.localPosition),
         onTap: () => taps?.add(text),
         child: SizedBox(
           width: vertical ? null : extent,

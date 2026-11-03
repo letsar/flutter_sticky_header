@@ -78,6 +78,110 @@ void main() {
       // The content starts at 80 - 50 = 30, so 150 is 120 into it.
       expect(taps, ['Header #0', 'Item 0.3']);
     });
+    testWidgets('scrolled not sticky header', (tester) async {
+      final taps = <String>[];
+      final controller = await pumpSections(tester, sticky: false, taps: taps);
+
+      controller.jumpTo(50);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 10));
+      await tester.tapAt(const Offset(200, 50));
+
+      expect(taps, ['Header #0', 'Item 0.0']);
+    });
+
+    testWidgets('scrolled not sticky header over the content', (tester) async {
+      final taps = <String>[];
+      final controller = await pumpSections(
+        tester,
+        sticky: false,
+        overlapsContent: true,
+        taps: taps,
+      );
+
+      controller.jumpTo(50);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 10));
+
+      expect(taps, ['Header #0']);
+    });
+
+    testWidgets('not sticky header partly below a pinned SliverAppBar',
+        (tester) async {
+      final taps = <String>[];
+      final positions = <Offset>[];
+      final controller = await pumpSections(
+        tester,
+        sticky: false,
+        leading: const SliverAppBar(pinned: true, toolbarHeight: 50),
+        taps: taps,
+        tapPositions: positions,
+      );
+
+      // The app bar is scrolled by 20 but still painted on 50, so the header
+      // is laid out at 30 and starts below the app bar.
+      controller.jumpTo(20);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 80));
+
+      expect(taps, ['Header #0']);
+      expect(positions, [const Offset(200, 50)]);
+    });
+
+    testWidgets('local position in a pushed header', (tester) async {
+      final positions = <Offset>[];
+      final controller = await pumpSections(tester, tapPositions: positions);
+
+      // Header #0 is between -40 and 40.
+      controller.jumpTo(840);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 20));
+
+      expect(positions, [const Offset(200, 60)]);
+    });
+
+    testWidgets('local position in a header pinned below a pinned SliverAppBar',
+        (tester) async {
+      final positions = <Offset>[];
+      final controller = await pumpSections(
+        tester,
+        leading: const SliverAppBar(pinned: true, toolbarHeight: 50),
+        tapPositions: positions,
+      );
+
+      // Header #0 is between 50 and 130.
+      controller.jumpTo(100);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 90));
+
+      expect(positions, [const Offset(200, 40)]);
+    });
+
+    testWidgets('content above a header pinned below a transparent sliver',
+        (tester) async {
+      final taps = <String>[];
+      final controller = await pumpSections(
+        tester,
+        leading: const PinnedHeaderSliver(child: SizedBox(height: 50)),
+        taps: taps,
+      );
+
+      // Header #0 is between 50 and 130, Item 0.0 between 30 and 70.
+      controller.jumpTo(100);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 40));
+
+      expect(taps, ['Item 0.0']);
+    });
+
+    testWidgets('content right after the header', (tester) async {
+      final taps = <String>[];
+      await pumpSections(tester, taps: taps);
+
+      await tester.tapAt(const Offset(200, 80));
+
+      expect(taps, ['Item 0.0']);
+    });
   });
 
   group('vertical reversed', () {
@@ -102,6 +206,23 @@ void main() {
 
       // Item 0.0 is at 780, so 710 is in Item 0.2.
       expect(taps, ['Header #0', 'Item 0.2']);
+    });
+
+    testWidgets('scrolled not sticky header', (tester) async {
+      final taps = <String>[];
+      final controller = await pumpSections(
+        tester,
+        sticky: false,
+        reverse: true,
+        taps: taps,
+      );
+
+      controller.jumpTo(50);
+      await tester.pump();
+      await tester.tapAt(const Offset(200, 790));
+      await tester.tapAt(const Offset(200, 750));
+
+      expect(taps, ['Header #0', 'Item 0.0']);
     });
   });
 
