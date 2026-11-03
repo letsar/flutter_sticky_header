@@ -1,3 +1,19 @@
+## 0.9.0
+### Fixed
+* Hit testing of headers. Taps now reach:
+  * a scrolled not sticky header;
+  * a not sticky header below a pinned sliver, such as a pinned `SliverAppBar`;
+  * the content painted above a header pinned below a sliver which doesn't absorb taps;
+  * the content on the first pixel after a header.
+* The `localPosition` received by a header pushed by the end of its section, or pinned below another pinned sliver.
+* The `localPosition` received by the content, which was shifted by the header extent. If you compensated for this offset in your code, remove the compensation.
+* `Scrollable.ensureVisible` when the header overlaps the content (https://github.com/letsar/flutter_sticky_header/pull/60).
+* Headers built with `SliverStickyHeader.builder` whose extent depends on their state: the content no longer keeps the previous extent until the next layout.
+
+### Added
+* An example with a header smaller when pinned.
+* A section in the README about `SliverMainAxisGroup`.
+
 ## 0.8.0
 ### Changed
 * Update Flutter constraints.
