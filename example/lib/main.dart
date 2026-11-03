@@ -2,6 +2,7 @@ import 'package:example/examples/nested.dart';
 import 'package:flutter/material.dart';
 
 import 'examples/animated_header.dart';
+import 'examples/chat.dart';
 import 'examples/grid.dart';
 import 'examples/list.dart';
 import 'examples/mix_slivers.dart';
@@ -10,6 +11,7 @@ import 'examples/on_state_changed.dart';
 import 'examples/resizing_header.dart';
 import 'examples/reverse.dart';
 import 'examples/side_header.dart';
+import 'examples/sticky_footer.dart';
 
 void main() {
   // debugPaintPointersEnabled = true;
@@ -74,6 +76,14 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Reverse List Example',
             builder: (_) => const ReverseExample(),
+          ),
+          _Item(
+            text: 'Chat Example (stickToEnd)',
+            builder: (_) => const ChatExample(),
+          ),
+          _Item(
+            text: 'Sticky Footer Example (stickToEnd)',
+            builder: (_) => const StickyFooterExample(),
           ),
           _Item(
             text: 'Mixing other slivers',
