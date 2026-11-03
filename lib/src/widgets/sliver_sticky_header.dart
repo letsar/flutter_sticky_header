@@ -155,6 +155,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.sliver,
     this.overlapsContent = false,
     this.sticky = true,
+    this.stickToEnd = false,
     this.controller,
     this.onStateChanged,
   }) : super(key: key);
@@ -172,6 +173,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     Widget? sliver,
     bool overlapsContent = false,
     bool sticky = true,
+    bool stickToEnd = false,
     StickyHeaderController? controller,
     ValueChanged<SliverStickyHeaderState>? onStateChanged,
   }) : this(
@@ -183,6 +185,7 @@ class SliverStickyHeader extends RenderObjectWidget {
           sliver: sliver,
           overlapsContent: overlapsContent,
           sticky: sticky,
+          stickToEnd: stickToEnd,
           controller: controller,
           onStateChanged: onStateChanged,
         );
@@ -200,6 +203,17 @@ class SliverStickyHeader extends RenderObjectWidget {
   /// Whether to stick the header.
   /// Defaults to true.
   final bool sticky;
+
+  /// Whether the header is displayed after the [sliver] and sticks to the end
+  /// of the viewport, instead of the start.
+  ///
+  /// The end is in the scroll direction. For example, in a reversed vertical
+  /// list, or for a sliver before the center of a [CustomScrollView], the
+  /// header is displayed at the top of the [sliver] and sticks to the top of
+  /// the viewport. In a vertical list, the header is a sticky footer.
+  ///
+  /// Defaults to false.
+  final bool stickToEnd;
 
   /// The controller used to interact with this sliver.
   ///
@@ -222,6 +236,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     return RenderSliverStickyHeader(
       overlapsContent: overlapsContent,
       sticky: sticky,
+      stickToEnd: stickToEnd,
       controller: controller ?? DefaultStickyHeaderController.of(context),
       onStateChanged: onStateChanged,
     );
@@ -239,6 +254,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
+      ..stickToEnd = stickToEnd
       ..controller = controller ?? DefaultStickyHeaderController.of(context)
       ..onStateChanged = onStateChanged;
   }
