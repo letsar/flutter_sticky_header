@@ -244,7 +244,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       geometry = SliverGeometry(
         scrollExtent: headerExtent + childLayoutGeometry.scrollExtent,
-        maxScrollObstructionExtent: sticky ? headerPaintExtent : 0,
+        // No maxScrollObstructionExtent: the viewport would consider the whole
+        // sliver as pinned, and Scrollable.ensureVisible would scroll to the
+        // end (#59).
         paintExtent: paintExtent,
         layoutExtent: math.min(
             headerPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),
