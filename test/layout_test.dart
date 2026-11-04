@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers.dart';
@@ -224,9 +225,50 @@ void main() {
     );
     await tester.pump();
 
-    // Section #1 starts at 880. The item is revealed just below the pinned
-    // Header #1.
-    expect(controller.offset, 880 + 2 * 40);
+    // Section #1 starts at 880, its content at 960.
+    expect(controller.offset, 960 + 2 * 40);
+  });
+
+  testWidgets(
+      'Scrollable.ensureVisible scrolls to an item of a visible section '
+      '(#59)', (tester) async {
+    final controller = await pumpSections(tester);
+
+    Scrollable.ensureVisible(
+      tester.element(find.text('Item 0.5', skipOffstage: false)),
+    );
+    await tester.pump();
+
+    expect(controller.offset, 80 + 5 * 40);
+
+    // Header #0 is pinned and Section #1 is visible.
+    controller.jumpTo(200);
+    await tester.pump();
+    Scrollable.ensureVisible(
+      tester.element(find.text('Item 1.2', skipOffstage: false)),
+    );
+    await tester.pump();
+
+    expect(controller.offset, 960 + 2 * 40);
+  });
+
+  testWidgets('Scrollable.ensureVisible scrolls to a visible section (#59)',
+      (tester) async {
+    final controller = await pumpSections(tester);
+    controller.jumpTo(200);
+    await tester.pump();
+
+    Scrollable.ensureVisible(
+      tester.element(
+        find.ancestor(
+          of: find.text('Header #1', skipOffstage: false),
+          matching: find.byType(SliverStickyHeader, skipOffstage: false),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(controller.offset, 880);
   });
 
   testWidgets(
